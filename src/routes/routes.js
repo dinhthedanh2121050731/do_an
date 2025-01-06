@@ -6,6 +6,7 @@ import CreateSong from '~/layouts/components/CreateSong';
 import Home from '~/pages/Home';
 import Profile from '~/pages/Profile';
 import Search from '~/pages/Search';
+import SignUp from '~/pages/Signup/Signup';
 //Public routes
 const publicRoutes = [
     {
@@ -21,6 +22,10 @@ const publicRoutes = [
     {
         path: config.routes.search,
         component: Search,
+    },
+    {
+        path: config.routes.signup,
+        component: SignUp,
     },
     {
         path: config.routes.createArtist,

@@ -11,7 +11,7 @@ const User = new Schema({
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });
-User.pre('save', async (next) => {
+User.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypts.hash(this.password, SALT_ROUND);
     }
