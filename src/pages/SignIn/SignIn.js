@@ -1,22 +1,24 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import config from '~/config/config';
 
-function SignUp() {
-    const [username, setUserName] = useState('');
+function SignIn() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [token, setToken] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/user/register', {
-                username,
+            const response = await axios.post('http://localhost:3000/users/login', {
                 email,
                 password,
             });
-            setUserName('');
             setPassword('');
             setEmail('');
+            setToken(response.data.access_token);
+            localStorage.setItem('token', response.data.access_token);
         } catch (error) {
             console.error('Error signing up:', error);
         }
@@ -25,13 +27,6 @@ function SignUp() {
     return (
         <div>
             <form onSubmit={handleSubmit} className="d-flex flex-column">
-                <input
-                    onChange={(e) => setUserName(e.target.value)}
-                    value={username}
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                />
                 <input
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
@@ -46,10 +41,12 @@ function SignUp() {
                     name="password"
                     placeholder="Password"
                 />
-                <button type="submit">Sign Up</button>
+                {/* <Link to={config.routes.home}> */}
+                <button type="submit">Sign In</button>
+                {/* </Link> */}
             </form>
         </div>
     );
 }
 
-export default SignUp;
+export default SignIn;

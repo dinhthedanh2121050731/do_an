@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './Home.module.scss';
+import Protected from '~/layouts/components/Protected';
 
 const cx = classNames.bind(styles);
 function Home() {
@@ -28,6 +29,7 @@ function Home() {
                 return (
                     <div key={index}>
                         <a href={artistId}>{artist.artist}</a>
+                        <Protected />
                     </div>
                 );
             })}

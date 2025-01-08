@@ -5,7 +5,7 @@ const SECRET_KEY = 'abc';
 const SALT_ROUND = 10;
 
 const User = new Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: false },
     email: { type: String, required: true },
     password: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },

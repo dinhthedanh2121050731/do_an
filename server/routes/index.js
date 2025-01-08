@@ -3,7 +3,7 @@ const artistsRouter = require('./artists');
 const usersRouter = require('./users');
 function route(app) {
     app.use('/artists', artistsRouter);
-    app.use('/user', usersRouter);
+    app.use('/users', usersRouter);
     app.use('/', homeRouter);
 }
 
