@@ -9,7 +9,7 @@ function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/user/register', {
+            const response = await axios.post('http://localhost:3000/users/register', {
                 username,
                 email,
                 password,

@@ -3,15 +3,16 @@ require('dotenv').config();
 
 const authenticateToken = function (req, res, next) {
     const token = req.header('Authorization')?.split(' ')[1];
+
     if (!token) {
-        return res.status(401).send({ message: 'Invalid token' });
+        return res.status(403).json({ message: 'Token is missing' });
     }
     try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
         next();
     } catch (err) {
-        return res.status(400).send({ message: 'Token is not valid' });
+        return res.status(403).json({ message: 'Token is invalid' });
     }
 };
 module.exports = authenticateToken;

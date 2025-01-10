@@ -2,19 +2,21 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './Home.module.scss';
-import Protected from '~/layouts/components/Protected';
 
 const cx = classNames.bind(styles);
 function Home() {
     const [artists, getArists] = useState([]);
     useEffect(() => {
-        const fetchArtists = async function () {
+        const fetchArtists = async () => {
+            const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('http://localhost:3000/artists');
-                getArists(res.data);
+                const response = await axios.get('http://localhost:3000/artists', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                getArists(response.data);
+                console.log(response);
             } catch (err) {
                 console.error(err);
             }
@@ -29,7 +31,6 @@ function Home() {
                 return (
                     <div key={index}>
                         <a href={artistId}>{artist.artist}</a>
-                        <Protected />
                     </div>
                 );
             })}

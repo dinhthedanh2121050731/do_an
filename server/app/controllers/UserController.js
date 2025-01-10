@@ -39,6 +39,7 @@ class UserController {
             }
             const access_token = jwt.sign(
                 {
+                    id: user._id,
                     email: user.email,
                     password: user.password,
                 },

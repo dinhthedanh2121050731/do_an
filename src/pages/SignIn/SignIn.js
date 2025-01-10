@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import config from '~/config/config';
+import { Link, useNavigate } from 'react-router-dom';
 
 function SignIn() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +18,9 @@ function SignIn() {
             setPassword('');
             setEmail('');
             setToken(response.data.access_token);
+            console.log(response);
             localStorage.setItem('token', response.data.access_token);
+            navigate('/');
         } catch (error) {
             console.error('Error signing up:', error);
         }
@@ -41,9 +43,7 @@ function SignIn() {
                     name="password"
                     placeholder="Password"
                 />
-                {/* <Link to={config.routes.home}> */}
                 <button type="submit">Sign In</button>
-                {/* </Link> */}
             </form>
         </div>
     );
