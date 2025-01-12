@@ -1,6 +1,7 @@
 import config from '~/config/config';
 import CreateArtist from '~/layouts/components/CreateArtist';
 import CreateSong from '~/layouts/components/CreateSong';
+import NoHeaderAndSidebar from '~/layouts/NoHeaderAndSidebar';
 
 // layouts
 import Home from '~/pages/Home';
@@ -27,10 +28,12 @@ const publicRoutes = [
     {
         path: config.routes.signup,
         component: SignUp,
+        layout: NoHeaderAndSidebar,
     },
     {
         path: config.routes.signin,
         component: SignIn,
+        layout: NoHeaderAndSidebar,
     },
     {
         path: config.routes.createArtist,

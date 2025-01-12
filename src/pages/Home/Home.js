@@ -16,7 +16,6 @@ function Home() {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 getArists(response.data);
-                console.log(response);
             } catch (err) {
                 console.error(err);
             }

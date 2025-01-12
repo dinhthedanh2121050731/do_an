@@ -44,15 +44,19 @@ class UserController {
                     password: user.password,
                 },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' },
+                { expiresIn: '1d' },
             );
             res.status(200).json({ message: 'Success', access_token });
         } catch (err) {
             res.status(500).json({ message: 'Error creating user', error: err });
         }
     }
-    protected(req, res) {
-        res.json({ message: 'This is protected', user: req.user });
+    async protected(req, res) {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ message: 'This is protected', user: user });
     }
 }
 module.exports = new UserController();
