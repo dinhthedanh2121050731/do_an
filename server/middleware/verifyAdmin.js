@@ -5,6 +5,7 @@ const User = require('../app/models/User');
 const verifAdmin = async function (req, res, next) {
     try {
         const token = req.header('Authorization')?.split(' ')[1];
+        console.log(req.header('Authorization'));
         if (!token) {
             return res.status(403).json({ message: 'Token is missing' });
         }

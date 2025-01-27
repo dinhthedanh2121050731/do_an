@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { useReducer } = require('react');
 require('dotenv').config();
 class UserController {
     async show(req, res) {
@@ -46,17 +47,26 @@ class UserController {
                 process.env.JWT_SECRET,
                 { expiresIn: '1d' },
             );
-            res.status(200).json({ message: 'Success', access_token });
+            res.status(200).json({ message: 'Success', access_token, user: user });
         } catch (err) {
             res.status(500).json({ message: 'Error creating user', error: err });
         }
     }
     async protected(req, res) {
         const user = await User.findById(req.user.id);
+        console.log(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
         res.json({ message: 'This is protected', user: user });
+    }
+    async getAdmin(req, res) {
+        const user = await User.findById(req.user.id);
+        console.log(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ message: 'This is admin', user: user });
     }
 }
 module.exports = new UserController();

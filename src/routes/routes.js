@@ -2,6 +2,7 @@ import config from '~/config/config';
 import CreateArtist from '~/layouts/components/CreateArtist';
 import CreateSong from '~/layouts/components/CreateSong';
 import NoHeaderAndSidebar from '~/layouts/NoHeaderAndSidebar';
+import AdminShowArtist from '~/pages/AdminShowArtist';
 
 // layouts
 import Home from '~/pages/Home';
@@ -9,6 +10,7 @@ import Profile from '~/pages/Profile';
 import Search from '~/pages/Search';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/Signup/Signup';
+import UpdateArtist from '~/pages/UpdateArtist';
 //Public routes
 const publicRoutes = [
     {
@@ -38,10 +40,22 @@ const publicRoutes = [
     {
         path: config.routes.createArtist,
         component: CreateArtist,
+        role: 'admin',
     },
     {
         path: config.routes.createSong,
         component: CreateSong,
+        role: 'admin',
+    },
+    {
+        path: config.routes.adminShowArtist,
+        component: AdminShowArtist,
+        role: 'admin',
+    },
+    {
+        path: config.routes.updateArtist,
+        component: UpdateArtist,
+        role: 'admin',
     },
 ];
 

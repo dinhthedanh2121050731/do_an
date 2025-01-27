@@ -36,10 +36,12 @@
 .search {
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
     background-color: #1f1f1f;
     padding: 10px 12px;
     border-radius: 30px;
+    width: 100%;
     border: 1px solid transparent;
     &:hover {
         border: 1px solid #403f3f;
@@ -65,11 +67,12 @@
 .input {
     background-color: transparent;
     color: #fff;
-    width: 374px;
+    width: 100%;
+    padding-right: 20px;
 }
 .auth-form {
     display: flex;
-    justify-content: space-around;
+    justify-content: end;
     align-items: center;
 }
 .register {
@@ -83,7 +86,6 @@
     }
 }
 .signin {
-    margin-right: 10px;
     padding: 10px 20px;
     background-color: #fff;
     color: #000;
@@ -99,45 +101,4 @@
     top: 0;
     right: 0;
     color: #fff;
-}
-.user-form {
-    position: relative;
-    margin-right: 30px;
-}
-.user-background {
-    padding: 8px;
-    background: linear-gradient(to bottom, #353535, #1f1f1f);
-    border-radius: 50%;
-    &:hover {
-        cursor: pointer;
-        transform: scale(1.04);
-    }
-}
-.nav-user-form {
-    position: absolute;
-    width: 200px;
-    top: 100%;
-    right: -25px;
-    background-color: #2a2a2a;
-    border-radius: 4px;
-}
-.text-nav-user-form {
-    display: none;
-    padding: 10px 14px;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.4rem;
-    color: #cccbcb;
-    &:hover {
-        text-decoration: underline;
-        background-color: #333;
-        color: #fff;
-    }
-    &:last-child {
-        border-top: 1px solid #3e3d3d;
-        &:hover {
-            text-decoration: none;
-        }
-    }
 }

@@ -1,12 +1,14 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AppContext, AppProvider } from '~/context/AppProvider';
 
 function SignIn() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
     const navigate = useNavigate();
+    const { user, setUser } = useContext(AppContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +20,8 @@ function SignIn() {
             setPassword('');
             setEmail('');
             setToken(response.data.access_token);
-            console.log(response);
+            console.log(response.data.user.role);
+            setUser(response.data.user.role);
             localStorage.setItem('token', response.data.access_token);
             navigate('/');
         } catch (error) {

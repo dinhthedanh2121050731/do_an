@@ -4,18 +4,23 @@ import classNames from 'classnames/bind';
 import { useEffect } from 'react';
 import axios from 'axios';
 import styles from './Home.module.scss';
+import SectionArtist from '~/layouts/components/SectionArtist/SectionArtist';
 
 const cx = classNames.bind(styles);
 function Home() {
     const [artists, getArists] = useState([]);
+    const [rapper, getRapper] = useState([]);
+    const [singer, getSinger] = useState([]);
     useEffect(() => {
         const fetchArtists = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://localhost:3000/artists', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                getArists(response.data);
+                const responseArtists = await axios.get('http://localhost:3000/artists');
+                const responseRapper = await axios.get('http://localhost:3000/artists/rapper');
+                const responseSinger = await axios.get('http://localhost:3000/artists/singer');
+                getArists(responseArtists.data);
+                getRapper(responseRapper.data);
+                getSinger(responseSinger.data);
             } catch (err) {
                 console.error(err);
             }
@@ -24,15 +29,9 @@ function Home() {
     }, []);
     return (
         <div className={cx('wrapper')}>
-            All artist
-            {artists.map((artist, index) => {
-                const artistId = `/song-create/${artist._id}`;
-                return (
-                    <div key={index}>
-                        <a href={artistId}>{artist.artist}</a>
-                    </div>
-                );
-            })}
+            <SectionArtist bio text="Nghệ sĩ phổ biến" dataUser={artists} />
+            <SectionArtist noBorderImg text="Rapper nổi bật" dataUser={rapper} />
+            <SectionArtist text="Ca sĩ nổi bật" dataUser={singer} />
         </div>
     );
 }

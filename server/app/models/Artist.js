@@ -5,8 +5,10 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Artist = new Schema(
     {
         _id: { type: Number },
+        name: { type: String },
         artist: { type: String },
         image_artist: { type: String },
+        genre: { type: String },
         songs: [
             {
                 name: { type: String },

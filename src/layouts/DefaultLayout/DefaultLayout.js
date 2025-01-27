@@ -8,16 +8,18 @@ const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper', 'container-fluid')}>
             <Header />
-            <div className={cx('container')}>
-                <Sidebar />
-                <div className={cx('content')}>
+            <div className={cx('row', 'container')}>
+                <div className={cx('col-2')}>
+                    <Sidebar />
+                </div>
+                <div className={cx('col-8', 'content')}>
                     {children}
                     <FooterContent />
                 </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

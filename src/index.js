@@ -3,13 +3,18 @@ import ReactDOM from 'react-dom/client';
 import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import GLStyles from './components/GlStyles';
+import { AppProvider } from './context/AppProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
     <GLStyles>
-        <App />
+        <AppProvider>
+            <App />
+        </AppProvider>
+        ,
     </GLStyles>,
+
     // </React.StrictMode>,
 );
 

@@ -5,7 +5,9 @@ const routes = {
     search: '/search',
     signup: '/signup',
     signin: '/signin',
-    createArtist: '/artist-create',
-    createSong: '/song-create/:id',
+    createArtist: '/admin/artist/artist-create',
+    createSong: '/admin/artist/song-create/:id',
+    adminShowArtist: '/admin/artist/artist-admin-show',
+    updateArtist: '/admin/artist/artist-update/:id',
 };
 export default routes;

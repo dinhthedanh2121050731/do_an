@@ -1,0 +1,93 @@
+.wrapper {
+    background-color: #121212;
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 14px;
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    width: 29vw;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.header-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        .header-text,
+        .libary-icon {
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+}
+.libary-icon {
+    font-size: 24px;
+    color: #b3b3b3;
+}
+.header-text {
+    margin-left: 10px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #b3b3b3;
+}
+.plussign-icon {
+    color: #b3b3b3;
+    &:hover {
+        color: #fff;
+        cursor: pointer;
+    }
+}
+.create-playlist-wrap {
+    height: 45vh;
+    overflow-y: overlay;
+}
+.create-playlist-li {
+    padding: 28px 16px;
+    background-color: #1f1f1f;
+    border-radius: 5px;
+}
+.create-playlist-li + .create-playlist-li {
+    margin-top: 20px;
+}
+.create-playlist-head {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.create-playlist-dsc {
+    margin-top: 8px;
+    font-size: 1.4rem;
+    color: #f3f3f3;
+}
+.create-playlist-btn {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: black;
+    background-color: #fff;
+    padding: 6px 8px;
+    border-radius: 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    outline: none;
+    &:hover {
+        transform: scale(1.04);
+    }
+}
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+}
+.footer-text {
+    list-style: none;
+    font-size: 1.2rem;
+    color: #b3b3b3;
+    margin-right: 16px;
+    padding: 8px;
+    cursor: pointer;
+}

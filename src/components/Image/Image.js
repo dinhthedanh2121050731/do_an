@@ -5,9 +5,9 @@ import styles from './Image.module.scss';
 function Image({ src, alt, className, ...props }) {
     return (
         <img
-            src={images.noImage || src}
+            src={src || images.noImage}
             alt={'anh_default ' || alt}
-            className={classNames(styles.wrapper, classNames)}
+            className={classNames(styles.wrapper, className)}
             {...props}
         />
     );
