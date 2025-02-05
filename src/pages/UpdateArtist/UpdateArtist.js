@@ -7,7 +7,7 @@ import config from '~/config/config';
 
 const cx = classNames.bind(style);
 
-function AdminShowArtist() {
+function UpdateArtist() {
     const location = useLocation();
     const data = Object(location.state);
     const [name, setName] = useState(data.name);
@@ -34,6 +34,10 @@ function AdminShowArtist() {
                         headers: { Authorization: `Bearer ${token}` },
                     },
                 );
+                setName('');
+                setArtist('');
+                setGenre('');
+                setImage('');
                 navigate(config.routes.adminShowArtist);
             };
             fetchApi();
@@ -94,4 +98,4 @@ function AdminShowArtist() {
     );
 }
 
-export default AdminShowArtist;
+export default UpdateArtist;

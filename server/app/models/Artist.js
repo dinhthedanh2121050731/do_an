@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const AutoIncrement = require('mongoose-sequence')(mongoose);
+const mongoose_delete = require('mongoose-delete');
 
 const Artist = new Schema(
     {
@@ -24,4 +25,5 @@ const Artist = new Schema(
     },
 );
 Artist.plugin(AutoIncrement);
+Artist.plugin(mongoose_delete, { overrideMethods: 'all', deletedAt: true, collection_name: true });
 module.exports = mongoose.model('Artist', Artist);

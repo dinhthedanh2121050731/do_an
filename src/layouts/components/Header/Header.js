@@ -5,11 +5,12 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import axios from 'axios';
 
 import MenuItem from '~/components/MenuItem';
 import config from '~/config/config';
 import styles from './Header.module.scss';
-import axios from 'axios';
+import img from '~/assets/images/rounded-in-photoretrica.png';
 
 import FormUser from '../FormUser';
 const cx = classNames.bind(styles);
@@ -39,10 +40,7 @@ function Header() {
         <div className={cx('wrapper', 'container-fluid')}>
             <div className={cx('row', 'wrapper')}>
                 <Link className={cx('col-1 col-lg-2  col-md-3 col-sm-1')} to={config.routes.home}>
-                    <img
-                        className={cx('logo')}
-                        src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_White.png"
-                    ></img>
+                    <img className={cx('logo')} src={img}></img>
                 </Link>
 
                 <div className={cx('search-home', 'col-7 col-lg-6 col-md-5 col-sm-6')}>

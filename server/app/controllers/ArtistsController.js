@@ -64,5 +64,23 @@ class HomeController {
             res.status(500).json({ message: 'Error updating artist', err });
         }
     }
+    async forceDeteted(req, res) {
+        try {
+            const { id } = req.params;
+            const deletedArtist = await Artist.delete({ _id: id });
+            res.status(200).json({ message: 'Artist deleted successfully', artist: deletedArtist });
+        } catch (err) {
+            res.status(500).json({ message: 'Error deleting artist', err });
+        }
+    }
+    async destroy(req, res) {
+        try {
+            const { id } = req.params;
+            const deletedArtist = await Artist.deleteOne({ _id: id });
+            res.status(200).json({ message: 'Artist deleted successfully', artist: deletedArtist });
+        } catch (err) {
+            res.status(500).json({ message: 'Error deleting artist', err });
+        }
+    }
 }
 module.exports = new HomeController();

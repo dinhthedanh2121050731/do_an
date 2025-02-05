@@ -6,11 +6,11 @@ import axios from 'axios';
 import styles from './CreateArtist.module.scss';
 const cx = classNames.bind(styles);
 function CreateArtist() {
-    const [artist, setArtist] = useState('');
-    const [image_artist, setImageArtist] = useState('');
-    const [name, setName] = useState('');
-    const [genre, setGenre] = useState('');
-    const [message, setMessage] = useState('');
+    const [artist, setArtist] = useState(' ');
+    const [image_artist, setImageArtist] = useState(' ');
+    const [name, setName] = useState(' ');
+    const [genre, setGenre] = useState(' ');
+    const [message, setMessage] = useState(' ');
 
     const handleSubmit = async (e) => {
         e.preventDefault();

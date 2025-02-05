@@ -13,6 +13,38 @@ function AdminShowArtist() {
     const handleUpdate = (data) => {
         navigate(`/admin/artist/artist-update/${data._id}`, { state: data });
     };
+    const hanldeDeleted = (id) => {
+        const fetchArtists = async () => {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await axios.delete(`http://localhost:3000/artists/delete-artist/${id}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                });
+                const updatedArtists = artists.filter((artist) => artist._id !== id);
+                setArtists(updatedArtists);
+                alert('Deleted successfully');
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchArtists();
+    };
+    const handleDestroy = (id) => {
+        const fetchArtists = async () => {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await axios.delete(`http://localhost:3000/artists/destroy-artist/${id}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                });
+                const updatedArtists = artists.filter((artist) => artist._id !== id);
+                setArtists(updatedArtists);
+                alert('Destroy successfully');
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchArtists();
+    };
 
     useEffect(() => {
         const fetchArtists = async () => {
@@ -53,8 +85,12 @@ function AdminShowArtist() {
                             <div onClick={() => handleUpdate(artist)} className={cx('btn', 'bg-info')}>
                                 Sửa
                             </div>
-                            <div className={cx('btn', 'bg-warning')}>Xoá</div>
-                            <div className={cx('btn', 'bg-danger')}>Xoá vĩnh</div>
+                            <div onClick={() => hanldeDeleted(artist._id)} className={cx('btn', 'bg-warning')}>
+                                Xoá
+                            </div>
+                            <div onClick={() => handleDestroy(artist._id)} className={cx('btn', 'bg-danger')}>
+                                Xoá vĩnh viễn
+                            </div>
                         </td>
                     </tr>
                 ))}
