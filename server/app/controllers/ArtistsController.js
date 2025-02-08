@@ -46,9 +46,9 @@ class HomeController {
     async addSong(req, res) {
         try {
             const { id } = req.params;
-            const { name, image_song, url } = req.body;
+            const { name, composer, image_song, url } = req.body;
             const artist = await Artist.findById(id);
-            artist.songs.push({ name, image_song, url });
+            artist.songs.push({ name, composer, image_song, url });
             await artist.save();
         } catch (err) {
             res.status(500).json({ message: 'Error creating artist', err });

@@ -7,6 +7,7 @@ import styles from './CreateSong.module.scss';
 const cx = classNames.bind(styles);
 function CreateSong() {
     const [name, setName] = useState('');
+    const [composer, setComposer] = useState('');
     const [image_song, setImageSong] = useState('');
     const [url, setUrl] = useState('');
     const [message, setMessage] = useState('');
@@ -20,6 +21,7 @@ function CreateSong() {
         try {
             const response = await axios.post(`http://localhost:3000/artists/add-song/${id}`, {
                 name,
+                composer,
                 image_song,
                 url,
             });
@@ -38,6 +40,10 @@ function CreateSong() {
                 <div>
                     <label>Name:</label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Composer:</label>
+                    <input type="text" value={composer} onChange={(e) => setComposer(e.target.value)} required />
                 </div>
                 <div>
                     <label>Image_song:</label>

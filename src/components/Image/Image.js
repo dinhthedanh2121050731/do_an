@@ -9,6 +9,7 @@ function Image({ src, alt, className, ...props }) {
             alt={'anh_default ' || alt}
             className={classNames(styles.wrapper, className)}
             {...props}
+            loading="lazy"
         />
     );
 }

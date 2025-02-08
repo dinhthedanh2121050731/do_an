@@ -1,6 +1,5 @@
 export const SpotiyIcon = ({ className, width = '3.2rem', height = '3.2rem' }) => (
     <svg
-        role="img"
         viewBox="0 0 24 24"
         aria-hidden="false"
         height="32"
@@ -21,7 +20,6 @@ export const HomeIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => 
         viewBox="0 0 24 24"
         fill="currentColor"
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
     >
         <path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"></path>
@@ -33,7 +31,6 @@ export const HomeActiveIcon = ({ className, width = '2.4rem', height = '2.4rem' 
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         fill="currentColor"
         viewBox="0 0 24 24"
@@ -47,7 +44,6 @@ export const SearchIcon = ({ className, width = '2.4rem', height = '2.4rem' }) =
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 24 24"
         fill="currentColor"
@@ -61,7 +57,6 @@ export const BrowseIcon = ({ className, width = '2.4rem', height = '2.4rem' }) =
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 24 24"
         fill="currentColor"
@@ -76,7 +71,6 @@ export const BrowseActiveIcon = ({ className, width = '2.4rem', height = '2.4rem
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 24 24"
         fill="currentColor"
@@ -90,7 +84,6 @@ export const AccessIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="false"
         fill="currentColor"
         viewBox="0 0 16 16"
@@ -105,7 +98,6 @@ export const LibraryIcon = ({ className, width = '2.4rem', height = '2.4rem' }) 
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 24 24"
         fill="currentColor"
@@ -119,7 +111,6 @@ export const PlusSignIcon = ({ className, width = '1.6rem', height = '1.6rem' })
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
         fill="currentColor"
@@ -133,7 +124,6 @@ export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) 
         height={height}
         className={className}
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
         fill="currentColor"
@@ -149,7 +139,6 @@ export const PreviousIcon = ({ className, width = '1.6rem', height = '1.6rem' })
         className={className}
         fill="currentColor"
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
     >
@@ -163,7 +152,6 @@ export const PauseIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =>
         className={className}
         fill="currentColor"
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
     >
@@ -177,7 +165,6 @@ export const PlayIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
         className={className}
         fill="currentColor"
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
     >
@@ -191,7 +178,6 @@ export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
         className={className}
         fill="currentColor"
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
     >
@@ -205,7 +191,6 @@ export const RepeatIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
         className={className}
         fill="currentColor"
         data-encore-id="icon"
-        role="img"
         aria-hidden="true"
         viewBox="0 0 16 16"
     >
