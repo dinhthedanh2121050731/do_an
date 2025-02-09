@@ -65,6 +65,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    // height: 34px;
+    // width: 258px;
 }
 .icon-control-bar,
 .icon-control-bar__background {
@@ -89,6 +91,9 @@
 .icon-control-bar__active {
     width: 16px;
     height: 16px;
+}
+.active {
+    color: #04aa6d;
 }
 .process-bar {
     display: flex;

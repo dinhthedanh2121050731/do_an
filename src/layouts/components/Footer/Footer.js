@@ -35,9 +35,14 @@ const srcAudio = [
     },
 ];
 function Footer() {
+    const controllerStorage = JSON.parse(localStorage.getItem('controller')) ?? false;
     const [play, setPlay] = useState(false);
     const [data, setData] = useState(srcAudio[0]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [shuffle, setShuffle] = useState(controllerStorage.shuffle || false);
+    const [repeat, setRepeat] = useState(controllerStorage.repeat || false);
+
+    localStorage.setItem('controller', JSON.stringify({ shuffle: shuffle, repeat: repeat }));
 
     const audioRef = useRef();
     const inputProcessBarRef = useRef();
@@ -46,9 +51,11 @@ function Footer() {
     const timeDurationRef = useRef();
     const nextIconRef = useRef();
     const prevIconRef = useRef();
-    const playPauseIconRef = useRef();
+    const shuffleIconRef = useRef();
+    const repeatIconRef = useRef();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
+        //Current state
         const audio = audioRef.current;
         const inputProcessBar = inputProcessBarRef.current;
         const inputProcessBackground = inputProcessBackgroundRef.current;
@@ -56,7 +63,9 @@ function Footer() {
         const timeDuration = timeDurationRef.current;
         const nextIcon = nextIconRef.current;
         const prevIcon = prevIconRef.current;
-        const playPauseIcon = playPauseIconRef.current;
+        const shuffleIcon = shuffleIconRef.current;
+        const repeatIcon = repeatIconRef.current;
+
         const duration = audio.duration;
         const app = {
             loadTimeSong: function () {
@@ -81,6 +90,40 @@ function Footer() {
                     timeCurrent.innerText = `${minuteCurrentTime}:${secondsCurrentTime}`;
                 }
             },
+            nextSong: function () {
+                if (currentIndex < srcAudio.length - 1) {
+                    setCurrentIndex((prev) => prev + 1);
+                    setData(srcAudio[currentIndex + 1]);
+                } else {
+                    setCurrentIndex(0);
+                    setData(srcAudio[0]);
+                }
+            },
+            prevSong: function () {
+                if (currentIndex > 0) {
+                    setCurrentIndex((prev) => prev - 1);
+                    setData(srcAudio[currentIndex - 1]);
+                } else {
+                    setCurrentIndex(srcAudio.length - 1);
+                    setData(srcAudio[srcAudio.length - 1]);
+                }
+            },
+            randomSong: function () {
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * srcAudio.length);
+                } while (newIndex === currentIndex);
+                setCurrentIndex(newIndex);
+                setData(srcAudio[currentIndex]);
+            },
+            setTimeDelay: function (delay) {
+                const defaultDelay = 300;
+                setPlay(false);
+                setTimeout(() => {
+                    setPlay(true);
+                    audio.play();
+                }, (delay = delay || defaultDelay));
+            },
 
             handleEvents: function () {
                 const _this = this;
@@ -94,50 +137,41 @@ function Footer() {
                         inputProcessBar.value = `${processTime}`;
                         _this.loadTimeSong();
                     };
+                    audio.onended = function () {
+                        if (repeat) {
+                            audio.loop = true;
+                            audio.play();
+                        } else {
+                            audio.loop = false;
+                            if (shuffle) {
+                                _this.randomSong();
+                                _this.setTimeDelay();
+                            } else {
+                                _this.nextSong();
+                                _this.setTimeDelay();
+                            }
+                        }
+                    };
                     inputProcessBar.oninput = function (e) {
                         const newTime = (e.target.value / 100) * duration;
                         audio.currentTime = newTime;
                     };
                     nextIcon.onclick = () => {
-                        if (currentIndex < srcAudio.length - 1) {
-                            setCurrentIndex((prev) => prev + 1);
-                            setPlay(false);
-                            setData(srcAudio[currentIndex + 1]);
-                            setTimeout(() => {
-                                setPlay(true);
-                                audio.play();
-                            }, 300);
-                            audio.pause();
+                        if (shuffle) {
+                            _this.randomSong();
+                            _this.setTimeDelay();
                         } else {
-                            setCurrentIndex(0);
-                            setData(srcAudio[0]);
-                            setPlay(false);
-                            setTimeout(() => {
-                                setPlay(true);
-                                audio.play();
-                            }, 300);
-                            audio.pause();
+                            _this.nextSong();
+                            _this.setTimeDelay();
                         }
                     };
                     prevIcon.onclick = () => {
-                        if (currentIndex > 0) {
-                            setCurrentIndex((prev) => prev - 1);
-                            setPlay(false);
-                            setData(srcAudio[currentIndex - 1]);
-                            setTimeout(() => {
-                                setPlay(true);
-                                audio.play();
-                            }, 300);
-                            audio.pause();
+                        if (shuffle) {
+                            _this.randomSong();
+                            _this.setTimeDelay();
                         } else {
-                            setCurrentIndex(srcAudio.length - 1);
-                            setData(srcAudio[srcAudio.length - 1]);
-                            setPlay(false);
-                            setTimeout(() => {
-                                setPlay(true);
-                                audio.play();
-                            }, 300);
-                            audio.pause();
+                            _this.prevSong();
+                            _this.setTimeDelay();
                         }
                     };
                 } else {
@@ -147,11 +181,10 @@ function Footer() {
             },
             start: function () {
                 this.handleEvents();
-                this.loadTimeSong();
             },
         };
         app.start();
-    }, [play, data]);
+    }, [play]);
 
     return (
         <div className={cx('footer')}>
@@ -166,30 +199,32 @@ function Footer() {
                 </div>
                 <div className={cx('player-container')}>
                     <div className={cx('control-bar')}>
-                        <div>
-                            <ShuffleIcon className={cx('icon-control-bar')} />
-                        </div>
-                        <div ref={prevIconRef}>
-                            <PreviousIcon className={cx('icon-control-bar')} />
-                        </div>
-                        <div ref={playPauseIconRef}>
-                            {play ? (
-                                <div onClick={() => setPlay(false)} className={cx('icon-control-bar__background')}>
-                                    <PlayIcon className={cx('icon-control-bar__active')} />
-                                </div>
-                            ) : (
-                                <div onClick={() => setPlay(true)} className={cx('icon-control-bar__background')}>
-                                    <PauseIcon className={cx('icon-control-bar__active')} />
-                                </div>
-                            )}
-                        </div>
+                        <ShuffleIcon
+                            onClick={() => {
+                                setShuffle(!shuffle);
+                            }}
+                            ref={shuffleIconRef}
+                            className={cx('icon-control-bar', { active: shuffle })}
+                        />
+                        <PreviousIcon ref={prevIconRef} className={cx('icon-control-bar')} />
+                        {play ? (
+                            <i onClick={() => setPlay(false)} className={cx('icon-control-bar__background')}>
+                                <PlayIcon className={cx('icon-control-bar__active')} />
+                            </i>
+                        ) : (
+                            <i onClick={() => setPlay(true)} className={cx('icon-control-bar__background')}>
+                                <PauseIcon className={cx('icon-control-bar__active')} />
+                            </i>
+                        )}
 
-                        <div ref={nextIconRef}>
-                            <NextIcon className={cx('icon-control-bar')} />
-                        </div>
-                        <div>
-                            <RepeatIcon className={cx('icon-control-bar')} />
-                        </div>
+                        <NextIcon ref={nextIconRef} className={cx('icon-control-bar')} />
+                        <RepeatIcon
+                            onClick={() => {
+                                setRepeat(!repeat);
+                            }}
+                            ref={repeatIconRef}
+                            className={cx('icon-control-bar', { active: repeat })}
+                        />
                     </div>
                     <div className={cx('process-bar')}>
                         <span ref={timeCurrentRef} className={cx('time')}>

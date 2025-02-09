@@ -1,4 +1,6 @@
-export const SpotiyIcon = ({ className, width = '3.2rem', height = '3.2rem' }) => (
+import { forwardRef } from 'react';
+
+export const SpotiyIcon = ({ className, width = '3.2rem', height = '3.2rem', ...props }) => (
     <svg
         viewBox="0 0 24 24"
         aria-hidden="false"
@@ -12,9 +14,10 @@ export const SpotiyIcon = ({ className, width = '3.2rem', height = '3.2rem' }) =
         ></path>
     </svg>
 );
-export const HomeIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const HomeIcon = ({ className, width = '2.4rem', height = '2.4rem', ...props }) => (
     <svg
         className={className}
+        {...props}
         width={width}
         height={height}
         viewBox="0 0 24 24"
@@ -25,11 +28,12 @@ export const HomeIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => 
         <path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"></path>
     </svg>
 );
-export const HomeActiveIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const HomeActiveIcon = ({ className, width = '2.4rem', height = '2.4rem', ...props }) => (
     <svg
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="true"
         fill="currentColor"
@@ -38,11 +42,12 @@ export const HomeActiveIcon = ({ className, width = '2.4rem', height = '2.4rem' 
         <path d="M13.5 1.515a3 3 0 0 0-3 0L3 5.845a2 2 0 0 0-1 1.732V21a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6h4v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7.577a2 2 0 0 0-1-1.732l-7.5-4.33z"></path>
     </svg>
 );
-export const SearchIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const SearchIcon = ({ className, width = '2.4rem', height = '2.4rem', ...props }) => (
     <svg
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="true"
         viewBox="0 0 24 24"
@@ -51,11 +56,12 @@ export const SearchIcon = ({ className, width = '2.4rem', height = '2.4rem' }) =
         <path d="M10.533 1.27893C5.35215 1.27893 1.12598 5.41887 1.12598 10.5579C1.12598 15.697 5.35215 19.8369 10.533 19.8369C12.767 19.8369 14.8235 19.0671 16.4402 17.7794L20.7929 22.132C21.1834 22.5226 21.8166 22.5226 22.2071 22.132C22.5976 21.7415 22.5976 21.1083 22.2071 20.7178L17.8634 16.3741C19.1616 14.7849 19.94 12.7634 19.94 10.5579C19.94 5.41887 15.7138 1.27893 10.533 1.27893ZM3.12598 10.5579C3.12598 6.55226 6.42768 3.27893 10.533 3.27893C14.6383 3.27893 17.94 6.55226 17.94 10.5579C17.94 14.5636 14.6383 17.8369 10.533 17.8369C6.42768 17.8369 3.12598 14.5636 3.12598 10.5579Z"></path>
     </svg>
 );
-export const BrowseIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const BrowseIcon = ({ className, width = '2.4rem', height = '2.4rem', ...props }) => (
     <svg
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="true"
         viewBox="0 0 24 24"
@@ -65,11 +71,12 @@ export const BrowseIcon = ({ className, width = '2.4rem', height = '2.4rem' }) =
         <path d="M1.513 9.37A1 1 0 0 1 2.291 9h19.418a1 1 0 0 1 .979 1.208l-2.339 11a1 1 0 0 1-.978.792H4.63a1 1 0 0 1-.978-.792l-2.339-11a1 1 0 0 1 .201-.837zM3.525 11l1.913 9h13.123l1.913-9H3.525zM4 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4h-2V3H6v3H4V2z"></path>
     </svg>
 );
-export const BrowseActiveIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const BrowseActiveIcon = ({ className, width = '2.4rem', height = '2.4rem', ...props }) => (
     <svg
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="true"
         viewBox="0 0 24 24"
@@ -78,11 +85,12 @@ export const BrowseActiveIcon = ({ className, width = '2.4rem', height = '2.4rem
         <path d="M4 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4H4V2zM1.513 9.37A1 1 0 0 1 2.291 9H21.71a1 1 0 0 1 .978 1.208l-2.17 10.208A2 2 0 0 1 18.562 22H5.438a2 2 0 0 1-1.956-1.584l-2.17-10.208a1 1 0 0 1 .201-.837zM12 17.834c1.933 0 3.5-1.044 3.5-2.333 0-1.289-1.567-2.333-3.5-2.333S8.5 14.21 8.5 15.5c0 1.289 1.567 2.333 3.5 2.333z"></path>
     </svg>
 );
-export const AccessIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const AccessIcon = ({ className, width = '1.6rem', height = '1.6rem', ...props }) => (
     <svg
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="false"
         fill="currentColor"
@@ -92,11 +100,12 @@ export const AccessIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
         <path d="M15 1v4.993a.75.75 0 1 1-1.5 0V3.56L8.78 8.28a.75.75 0 0 1-1.06-1.06l4.72-4.72h-2.433a.75.75 0 0 1 0-1.5H15z"></path>
     </svg>
 );
-export const LibraryIcon = ({ className, width = '2.4rem', height = '2.4rem' }) => (
+export const LibraryIcon = ({ className, width = '2.4rem', height = '2.4rem', ...props }) => (
     <svg
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="true"
         viewBox="0 0 24 24"
@@ -105,11 +114,13 @@ export const LibraryIcon = ({ className, width = '2.4rem', height = '2.4rem' }) 
         <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path>
     </svg>
 );
-export const PlusSignIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const PlusSignIcon = ({ ref, className, width = '1.6rem', height = '1.6rem', ...props }) => (
     <svg
+        ref={ref}
         width={width}
         height={height}
         className={className}
+        {...props}
         data-encore-id="icon"
         aria-hidden="true"
         viewBox="0 0 16 16"
@@ -118,25 +129,31 @@ export const PlusSignIcon = ({ className, width = '1.6rem', height = '1.6rem' })
         <path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"></path>
     </svg>
 );
-export const ShuffleIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+export const ShuffleIcon = forwardRef(({ className, width = '1.6rem', height = '1.6rem', ...props }, ref) => {
+    return (
+        <svg
+            ref={ref}
+            width={width}
+            height={height}
+            className={className}
+            {...props}
+            data-encore-id="icon"
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+        >
+            <path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path>
+            <path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path>
+        </svg>
+    );
+});
+export const PreviousIcon = forwardRef(({ className, width = '1.6rem', height = '1.6rem', ...props }, ref) => (
     <svg
+        ref={ref}
         width={width}
         height={height}
         className={className}
-        data-encore-id="icon"
-        aria-hidden="true"
-        viewBox="0 0 16 16"
-        fill="currentColor"
-    >
-        <path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path>
-        <path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path>
-    </svg>
-);
-export const PreviousIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
-    <svg
-        width={width}
-        height={height}
-        className={className}
+        {...props}
         fill="currentColor"
         data-encore-id="icon"
         aria-hidden="true"
@@ -144,12 +161,14 @@ export const PreviousIcon = ({ className, width = '1.6rem', height = '1.6rem' })
     >
         <path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"></path>
     </svg>
-);
-export const PauseIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+));
+export const PauseIcon = forwardRef(({ className, width = '1.6rem', height = '1.6rem', ...props }, ref) => (
     <svg
+        ref={ref}
         width={width}
         height={height}
         className={className}
+        {...props}
         fill="currentColor"
         data-encore-id="icon"
         aria-hidden="true"
@@ -157,12 +176,14 @@ export const PauseIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =>
     >
         <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"></path>
     </svg>
-);
-export const PlayIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+));
+export const PlayIcon = forwardRef(({ className, width = '1.6rem', height = '1.6rem', ...props }, ref) => (
     <svg
+        ref={ref}
         width={width}
         height={height}
         className={className}
+        {...props}
         fill="currentColor"
         data-encore-id="icon"
         aria-hidden="true"
@@ -170,12 +191,14 @@ export const PlayIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     >
         <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path>
     </svg>
-);
-export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+));
+export const NextIcon = forwardRef(({ className, width = '1.6rem', height = '1.6rem', ...props }, ref) => (
     <svg
+        ref={ref}
         width={width}
         height={height}
         className={className}
+        {...props}
         fill="currentColor"
         data-encore-id="icon"
         aria-hidden="true"
@@ -183,12 +206,14 @@ export const NextIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => 
     >
         <path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"></path>
     </svg>
-);
-export const RepeatIcon = ({ className, width = '1.6rem', height = '1.6rem' }) => (
+));
+export const RepeatIcon = forwardRef(({ className, width = '1.6rem', height = '1.6rem', ...props }, ref) => (
     <svg
+        ref={ref}
         width={width}
         height={height}
         className={className}
+        {...props}
         fill="currentColor"
         data-encore-id="icon"
         aria-hidden="true"
@@ -196,4 +221,4 @@ export const RepeatIcon = ({ className, width = '1.6rem', height = '1.6rem' }) =
     >
         <path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"></path>
     </svg>
-);
+));
