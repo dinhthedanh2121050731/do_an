@@ -1,7 +1,7 @@
-import { faPause, faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faVolumeDown, faVolumeUp, faVolumeXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { NextIcon, PauseIcon, PlayIcon, PreviousIcon, RepeatIcon, ShuffleIcon } from '~/components/Icon';
 import Image from '~/components/Image';
 
@@ -41,6 +41,8 @@ function Footer() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [shuffle, setShuffle] = useState(controllerStorage.shuffle || false);
     const [repeat, setRepeat] = useState(controllerStorage.repeat || false);
+    const [volume, setVolume] = useState(localStorage.getItem('volume') || 1);
+    const [animation, setAnimation] = useState(false);
 
     localStorage.setItem('controller', JSON.stringify({ shuffle: shuffle, repeat: repeat }));
 
@@ -51,8 +53,19 @@ function Footer() {
     const timeDurationRef = useRef();
     const nextIconRef = useRef();
     const prevIconRef = useRef();
-    const shuffleIconRef = useRef();
-    const repeatIconRef = useRef();
+    const inputVolumeControlRef = useRef();
+    const inputVolumeControlBackGroundRef = useRef();
+    const textDescRef = useRef();
+
+    const renderIconVolumes = useCallback(() => {
+        if (volume > 0.5) {
+            return <FontAwesomeIcon icon={faVolumeUp} />;
+        } else if (0 < volume <= 0.5) {
+            return <FontAwesomeIcon icon={faVolumeXmark} />;
+        } else {
+            return <FontAwesomeIcon icon={faVolumeDown} />;
+        }
+    }, [volume]);
 
     useEffect(() => {
         //Current state
@@ -63,17 +76,26 @@ function Footer() {
         const timeDuration = timeDurationRef.current;
         const nextIcon = nextIconRef.current;
         const prevIcon = prevIconRef.current;
-        const shuffleIcon = shuffleIconRef.current;
-        const repeatIcon = repeatIconRef.current;
+        const inputVolumeControl = inputVolumeControlRef.current;
+        const inputVolumeControlBackGround = inputVolumeControlBackGroundRef.current;
+        const textDesc = textDescRef.current;
 
         const duration = audio.duration;
         const app = {
-            loadTimeSong: function () {
-                const minuteDuration = duration / 60;
-                const secondsDuration = Math.floor(duration % 60);
+            loadTimeCurrent: function () {
                 const currentTime = audio.currentTime;
                 const minuteCurrentTime = Math.floor(currentTime / 60);
                 const secondsCurrentTime = Math.floor(currentTime % 60);
+                //Tạo currentTime time
+                if (Math.floor(currentTime % 60 < 10)) {
+                    timeCurrent.innerText = `${minuteCurrentTime}:0${secondsCurrentTime}`;
+                } else {
+                    timeCurrent.innerText = `${minuteCurrentTime}:${secondsCurrentTime}`;
+                }
+            },
+            loadTimeDuration: function () {
+                const minuteDuration = duration / 60;
+                const secondsDuration = Math.floor(duration % 60);
 
                 //Tạo duration time
                 if (secondsDuration < 10) {
@@ -82,12 +104,6 @@ function Footer() {
                     timeDuration.innerText = `0:00`;
                 } else {
                     timeDuration.innerText = `${Math.floor(minuteDuration)}:${secondsDuration}`;
-                }
-                //Tạo currentTime time
-                if (Math.floor(currentTime % 60 < 10)) {
-                    timeCurrent.innerText = `${minuteCurrentTime}:0${secondsCurrentTime}`;
-                } else {
-                    timeCurrent.innerText = `${minuteCurrentTime}:${secondsCurrentTime}`;
                 }
             },
             nextSong: function () {
@@ -129,13 +145,12 @@ function Footer() {
                 const _this = this;
                 if (play) {
                     audio.play();
-                    setPlay(true);
                     audio.ontimeupdate = function () {
                         const currentTime = audio.currentTime;
                         const processTime = (currentTime / duration) * 100;
                         inputProcessBackground.style.width = `${processTime}%`;
                         inputProcessBar.value = `${processTime}`;
-                        _this.loadTimeSong();
+                        _this.loadTimeCurrent();
                     };
                     audio.onended = function () {
                         if (repeat) {
@@ -176,11 +191,23 @@ function Footer() {
                     };
                 } else {
                     audio.pause();
-                    setPlay(false);
                 }
             },
             start: function () {
                 this.handleEvents();
+                this.loadTimeDuration();
+                inputVolumeControlBackGround.style.width = `${volume * 100}%`;
+                inputVolumeControl.oninput = function (e) {
+                    audio.volume = e.target.value;
+                    inputVolumeControlBackGround.style.width = `${audio.volume * 100}%`;
+                    localStorage.setItem('volume', audio.volume);
+                    setVolume(audio.volume);
+                };
+                if (textDesc.clientWidth >= 125) {
+                    setAnimation(true);
+                } else if (textDesc.clientWidth < 125) {
+                    setAnimation(false);
+                }
             },
         };
         app.start();
@@ -193,7 +220,9 @@ function Footer() {
                     <Image src={data.image_song} className={cx('img')} />
                     <div className={cx('track-details')}>
                         <div className={cx('text-head')}>{data.name}</div>
-                        <div className={cx('text-desc')}>{data.composer}</div>
+                        <div ref={textDescRef} className={cx('text-desc', { animation_text: animation })}>
+                            {data.composer}
+                        </div>
                     </div>
                     <FontAwesomeIcon icon={faPlus} className={cx('icon-plus')} />
                 </div>
@@ -203,7 +232,6 @@ function Footer() {
                             onClick={() => {
                                 setShuffle(!shuffle);
                             }}
-                            ref={shuffleIconRef}
                             className={cx('icon-control-bar', { active: shuffle })}
                         />
                         <PreviousIcon ref={prevIconRef} className={cx('icon-control-bar')} />
@@ -222,7 +250,6 @@ function Footer() {
                             onClick={() => {
                                 setRepeat(!repeat);
                             }}
-                            ref={repeatIconRef}
                             className={cx('icon-control-bar', { active: repeat })}
                         />
                     </div>
@@ -235,20 +262,31 @@ function Footer() {
                                 ref={inputProcessBarRef}
                                 className={cx('input-process-bar')}
                                 type="range"
-                                defaultValue="0"
                                 min="0"
                                 step="0.1"
                                 max="100"
                             />
-                            <div ref={inputProcessBackgroundRef} className={cx('input-process-bar_background')}></div>
+                            <nav ref={inputProcessBackgroundRef} className={cx('input-process-bar_background')}></nav>
                         </div>
                         <span ref={timeDurationRef} className={cx('time')}>
                             0:00
                         </span>
                     </div>
                 </div>
+                <div style={{ width: 30, height: 30, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {renderIconVolumes()}
+                </div>
                 <div className={cx('volume-control')}>
-                    <input className={cx('input-voulume-control')} type="range" min="0" step="10" max="100" />
+                    <input
+                        ref={inputVolumeControlRef}
+                        defaultValue={volume}
+                        className={cx('input-volume-control')}
+                        type="range"
+                        min="0"
+                        step="0.1"
+                        max="1"
+                    />
+                    <nav ref={inputVolumeControlBackGroundRef} className={cx('input-volume-control_background')}></nav>
                 </div>
             </div>
             <audio ref={audioRef} src={data.url} type="audio/mp3" />
