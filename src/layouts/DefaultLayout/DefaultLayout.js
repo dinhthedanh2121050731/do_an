@@ -14,7 +14,7 @@ function DefaultLayout({ children }) {
                 <div className={cx('col-2')}>
                     <Sidebar />
                 </div>
-                <div className={cx('col-8', 'content')}>
+                <div className={cx('col-10', 'content')}>
                     {children}
                     <FooterContent />
                 </div>

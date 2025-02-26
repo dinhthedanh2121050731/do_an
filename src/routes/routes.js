@@ -7,6 +7,7 @@ import AdminShowArtist from '~/pages/AdminShowArtist';
 // layouts
 import Home from '~/pages/Home';
 import Profile from '~/pages/Profile';
+import ProfileArtist from '~/pages/ProfileArtist';
 import Search from '~/pages/Search';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/Signup/Signup';
@@ -56,6 +57,10 @@ const publicRoutes = [
         path: config.routes.updateArtist,
         component: UpdateArtist,
         role: 'admin',
+    },
+    {
+        path: config.routes.profileArtist,
+        component: ProfileArtist,
     },
 ];
 

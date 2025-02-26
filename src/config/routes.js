@@ -9,5 +9,6 @@ const routes = {
     createSong: '/admin/artist/song-create/:id',
     adminShowArtist: '/admin/artist/artist-admin-show',
     updateArtist: '/admin/artist/artist-update/:id',
+    profileArtist: '/artist/:name',
 };
 export default routes;

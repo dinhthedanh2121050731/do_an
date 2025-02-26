@@ -1,13 +1,12 @@
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './CreateArtist.module.scss';
 const cx = classNames.bind(styles);
 function CreateArtist() {
     const [artist, setArtist] = useState(' ');
     const [image_artist, setImageArtist] = useState(' ');
+    const [image_album, setImageAlbum] = useState('');
     const [name, setName] = useState(' ');
     const [genre, setGenre] = useState(' ');
     const [message, setMessage] = useState(' ');
@@ -24,6 +23,7 @@ function CreateArtist() {
                     image_artist,
                     name,
                     genre,
+                    image_album,
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -33,7 +33,8 @@ function CreateArtist() {
             setArtist('');
             setImageArtist('');
             setName('');
-            setGenre();
+            setGenre('');
+            setImageAlbum('');
         } catch (error) {
             console.error('Error creating user:', error);
             setMessage('Error creating user');
@@ -58,6 +59,10 @@ function CreateArtist() {
                 <div>
                     <label>Image Artist:</label>
                     <input type="text" value={image_artist} onChange={(e) => setImageArtist(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Image album:</label>
+                    <input type="text" value={image_album} onChange={(e) => setImageAlbum(e.target.value)} required />
                 </div>
 
                 <button type="submit">Create Artist</button>

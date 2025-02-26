@@ -2,6 +2,11 @@
     display: flex;
     margin-top: 64px;
     color: #fff;
+    &::-webkit-scrollbar {
+        border-radius: 0px;
+        width: 0;
+    }
+    overflow: hidden;
 }
 .content {
     margin-left: 30vw;

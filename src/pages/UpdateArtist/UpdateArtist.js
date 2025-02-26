@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './UpdateArtist.module.scss';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import config from '~/config/config';
 
 const cx = classNames.bind(style);
@@ -13,11 +13,11 @@ function UpdateArtist() {
     const [name, setName] = useState(data.name);
     const [artist, setArtist] = useState(data.artist);
     const [genre, setGenre] = useState(data.genre);
-    const [image, setImage] = useState(data.image_artist);
-
+    const [image_artist, setImage] = useState(data.image_artist);
+    const [image_album, setImageAblum] = useState(data.image_album);
     const navigate = useNavigate();
 
-    const handleUpdate = (e) => {
+    const handleUpdate = useCallback((e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
@@ -28,7 +28,8 @@ function UpdateArtist() {
                         name,
                         artist,
                         genre,
-                        image,
+                        image_artist,
+                        image_album,
                     },
                     {
                         headers: { Authorization: `Bearer ${token}` },
@@ -38,13 +39,14 @@ function UpdateArtist() {
                 setArtist('');
                 setGenre('');
                 setImage('');
+                setImageAblum('');
                 navigate(config.routes.adminShowArtist);
             };
             fetchApi();
         } catch (err) {
             console.log(err);
         }
-    };
+    });
 
     return (
         <form method="PUT">
@@ -83,14 +85,25 @@ function UpdateArtist() {
                 />
             </div>
             <div className={cx('item')}>
-                <label htmlFor="name">Image:</label>
+                <label htmlFor="name">Image Artist:</label>
                 <input
                     onChange={(e) => setImage(e.target.value)}
-                    value={image}
+                    value={image_artist}
                     type="text"
                     id="image_artist"
                     name="image_artist"
                     placeholder={data.image_artist}
+                />
+            </div>
+            <div className={cx('item')}>
+                <label htmlFor="name">Image Album:</label>
+                <input
+                    onChange={(e) => setImageAblum(e.target.value)}
+                    value={image_album}
+                    type="text"
+                    id="image_artist"
+                    name="image_artist"
+                    placeholder={data.image_album}
                 />
             </div>
             <button onClick={(e) => handleUpdate(e)}>Cập nhật</button>

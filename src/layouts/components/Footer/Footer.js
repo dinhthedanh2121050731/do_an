@@ -1,51 +1,30 @@
 import { faPlus, faVolumeDown, faVolumeUp, faVolumeXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
 import { NextIcon, PauseIcon, PlayIcon, PreviousIcon, RepeatIcon, ShuffleIcon } from '~/components/Icon';
 import Image from '~/components/Image';
-
 import style from './Footer.module.scss';
-import khongthesay from '~/assets/sounds/KhongTheSay.mp3';
-import nolovenolive from '~/assets/sounds/523d1e25f4e888d8920b84d8bd0e731f.mp3';
-import vetinh from '~/assets/sounds/6f88866cfadcb72de0a68edc99a6444a.mp3';
+import { DataMusicContext } from '~/context/AppProvider';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
-const srcAudio = [
-    {
-        name: 'Không Thể Say',
-        composer: 'HieuThuHai',
-        image_song: 'https://i.scdn.co/image/ab67616d00004851c006b0181a3846c1c63e178f',
-        url: khongthesay,
-    },
-    {
-        name: 'NOLOVENOLIVE',
-        composer: 'HieuThuHai',
-        image_song:
-            'https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/1/0/e/4/10e4d42bb9604e35f971bb0d82fa369d.jpg',
-        url: nolovenolive,
-    },
-    {
-        name: 'Vệ Tinh',
-        composer: 'HieuThuHai,Hoàng Tôn, Kewtiie',
-        image_song:
-            'https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/4/9/f/6/49f6f7ebf517b9a6b2bc47abd6abfa32.jpg',
-        url: vetinh,
-    },
-];
 function Footer() {
+    // Lấy state từ context data music
+    const { dataMusic, idMusic, play, setPlay } = useContext(DataMusicContext);
     const controllerStorage = JSON.parse(localStorage.getItem('controller')) ?? false;
-    const [play, setPlay] = useState(false);
-    const [data, setData] = useState(srcAudio[0]);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const volumeStorage = localStorage.getItem('volume');
+    // Tạo State
+    const [data, setData] = useState(dataMusic[idMusic] ?? []);
+    const [currentIndex, setCurrentIndex] = useState(idMusic);
     const [shuffle, setShuffle] = useState(controllerStorage.shuffle || false);
     const [repeat, setRepeat] = useState(controllerStorage.repeat || false);
-    const [volume, setVolume] = useState(localStorage.getItem('volume') || 1);
-    const [animation, setAnimation] = useState(false);
-
-    localStorage.setItem('controller', JSON.stringify({ shuffle: shuffle, repeat: repeat }));
-
+    const [volume, setVolume] = useState(volumeStorage || 0);
+    const [textDesc, setTextDesc] = useState([]);
+    console.log(volumeStorage);
+    // Tạo Ref
     const audioRef = useRef();
     const inputProcessBarRef = useRef();
     const inputProcessBackgroundRef = useRef();
@@ -57,16 +36,18 @@ function Footer() {
     const inputVolumeControlBackGroundRef = useRef();
     const textDescRef = useRef();
 
+    // Hàm xử lý volume
     const renderIconVolumes = useCallback(() => {
         if (volume > 0.5) {
             return <FontAwesomeIcon icon={faVolumeUp} />;
-        } else if (0 < volume <= 0.5) {
-            return <FontAwesomeIcon icon={faVolumeXmark} />;
-        } else {
+        } else if (volume > 0 && volume <= 0.5) {
             return <FontAwesomeIcon icon={faVolumeDown} />;
+        } else {
+            return <FontAwesomeIcon icon={faVolumeXmark} />;
         }
     }, [volume]);
 
+    // Xử lý audio khi phát
     useEffect(() => {
         //Current state
         const audio = audioRef.current;
@@ -81,7 +62,11 @@ function Footer() {
         const textDesc = textDescRef.current;
 
         const duration = audio.duration;
+
+        localStorage.setItem('controller', JSON.stringify({ shuffle: shuffle, repeat: repeat }));
+
         const app = {
+            //Hàm cập nhật current
             loadTimeCurrent: function () {
                 const currentTime = audio.currentTime;
                 const minuteCurrentTime = Math.floor(currentTime / 60);
@@ -93,11 +78,11 @@ function Footer() {
                     timeCurrent.innerText = `${minuteCurrentTime}:${secondsCurrentTime}`;
                 }
             },
+            // Hàm cập nhật duration
             loadTimeDuration: function () {
                 const minuteDuration = duration / 60;
                 const secondsDuration = Math.floor(duration % 60);
 
-                //Tạo duration time
                 if (secondsDuration < 10) {
                     timeDuration.innerText = `${Math.floor(minuteDuration)}:0${secondsDuration}`;
                 } else if (!minuteDuration && !secondsDuration) {
@@ -106,32 +91,37 @@ function Footer() {
                     timeDuration.innerText = `${Math.floor(minuteDuration)}:${secondsDuration}`;
                 }
             },
+
+            // Hàm khi next song
             nextSong: function () {
-                if (currentIndex < srcAudio.length - 1) {
+                if (currentIndex < dataMusic.length - 1) {
                     setCurrentIndex((prev) => prev + 1);
-                    setData(srcAudio[currentIndex + 1]);
+                    setData(dataMusic[currentIndex + 1]);
                 } else {
                     setCurrentIndex(0);
-                    setData(srcAudio[0]);
+                    setData(dataMusic[0]);
                 }
             },
+            // Hàm khi prev song
             prevSong: function () {
                 if (currentIndex > 0) {
                     setCurrentIndex((prev) => prev - 1);
-                    setData(srcAudio[currentIndex - 1]);
+                    setData(dataMusic[currentIndex - 1]);
                 } else {
-                    setCurrentIndex(srcAudio.length - 1);
-                    setData(srcAudio[srcAudio.length - 1]);
+                    setCurrentIndex(dataMusic.length - 1);
+                    setData(dataMusic[dataMusic.length - 1]);
                 }
             },
+            // Hàm shuffle song
             randomSong: function () {
                 let newIndex;
                 do {
-                    newIndex = Math.floor(Math.random() * srcAudio.length);
+                    newIndex = Math.floor(Math.random() * dataMusic.length);
                 } while (newIndex === currentIndex);
                 setCurrentIndex(newIndex);
-                setData(srcAudio[currentIndex]);
+                setData(dataMusic[currentIndex]);
             },
+            // Hàm set time out
             setTimeDelay: function (delay) {
                 const defaultDelay = 300;
                 setPlay(false);
@@ -140,7 +130,19 @@ function Footer() {
                     audio.play();
                 }, (delay = delay || defaultDelay));
             },
+            // Hàm set volume
+            volumeSong: function () {
+                inputVolumeControlBackGround.style.width = `${volume * 100}%`;
+                audio.volume = volume;
+                inputVolumeControl.oninput = function (e) {
+                    audio.volume = e.target.value;
+                    inputVolumeControlBackGround.style.width = `${audio.volume * 100}%`;
+                    localStorage.setItem('volume', audio.volume);
+                    setVolume(audio.volume);
+                };
+            },
 
+            // Hàm xử lý event
             handleEvents: function () {
                 const _this = this;
                 if (play) {
@@ -196,32 +198,53 @@ function Footer() {
             start: function () {
                 this.handleEvents();
                 this.loadTimeDuration();
-                inputVolumeControlBackGround.style.width = `${volume * 100}%`;
-                inputVolumeControl.oninput = function (e) {
-                    audio.volume = e.target.value;
-                    inputVolumeControlBackGround.style.width = `${audio.volume * 100}%`;
-                    localStorage.setItem('volume', audio.volume);
-                    setVolume(audio.volume);
-                };
-                if (textDesc.clientWidth >= 125) {
-                    setAnimation(true);
-                } else if (textDesc.clientWidth < 125) {
-                    setAnimation(false);
-                }
+                this.volumeSong();
             },
         };
         app.start();
+        return () => {
+            audio.pause();
+            audio.ontimeupdate = null;
+            audio.onended = null;
+            inputProcessBar.oninput = null;
+            nextIcon.onclick = null;
+            prevIcon.onclick = null;
+            inputVolumeControl.oninput = null;
+        };
     }, [play]);
+
+    //Xử lý khi thêm state ở context
+    useEffect(() => {
+        setData(dataMusic[idMusic]);
+        if (play) {
+            setPlay(false);
+            setTimeout(() => {
+                setPlay(true);
+                setVolume(volumeStorage);
+            }, 500);
+        }
+        setCurrentIndex(idMusic);
+    }, [idMusic, dataMusic]);
+    useEffect(() => {
+        const texts = data.composer.split(',');
+        setTextDesc(texts);
+    }, [data]);
 
     return (
         <div className={cx('footer')}>
             <div className={cx('wrapper')}>
                 <div className={cx('left-content')}>
-                    <Image src={data.image_song} className={cx('img')} />
+                    <Image src={data.image_song || 'https://via.placeholder.com/150'} className={cx('img')} />
                     <div className={cx('track-details')}>
                         <div className={cx('text-head')}>{data.name}</div>
-                        <div ref={textDescRef} className={cx('text-desc', { animation_text: animation })}>
-                            {data.composer}
+                        <div ref={textDescRef} className={cx('text-wrap-name')}>
+                            {textDesc.map((text, index) => (
+                                // <Link key={index}>
+                                <div key={index} className={cx('text-desc')}>
+                                    {text}
+                                </div>
+                                // </Link>
+                            ))}
                         </div>
                     </div>
                     <FontAwesomeIcon icon={faPlus} className={cx('icon-plus')} />
@@ -236,11 +259,21 @@ function Footer() {
                         />
                         <PreviousIcon ref={prevIconRef} className={cx('icon-control-bar')} />
                         {play ? (
-                            <i onClick={() => setPlay(false)} className={cx('icon-control-bar__background')}>
+                            <i
+                                onClick={() => {
+                                    setPlay(false);
+                                }}
+                                className={cx('icon-control-bar__background')}
+                            >
                                 <PlayIcon className={cx('icon-control-bar__active')} />
                             </i>
                         ) : (
-                            <i onClick={() => setPlay(true)} className={cx('icon-control-bar__background')}>
+                            <i
+                                onClick={() => {
+                                    setPlay(true);
+                                }}
+                                className={cx('icon-control-bar__background')}
+                            >
                                 <PauseIcon className={cx('icon-control-bar__active')} />
                             </i>
                         )}
@@ -273,10 +306,19 @@ function Footer() {
                         </span>
                     </div>
                 </div>
-                <div style={{ width: 30, height: 30, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    {renderIconVolumes()}
-                </div>
+
                 <div className={cx('volume-control')}>
+                    <div
+                        style={{
+                            width: 30,
+                            height: 30,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        {renderIconVolumes()}
+                    </div>
                     <input
                         ref={inputVolumeControlRef}
                         defaultValue={volume}

@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './CreateSong.module.scss';
 const cx = classNames.bind(styles);
@@ -15,19 +14,29 @@ function CreateSong() {
     const id = params.id;
 
     const handleSubmit = async (e) => {
+        const token = localStorage.getItem('token');
         e.preventDefault();
 
         // Gửi dữ liệu đến backend
         try {
-            const response = await axios.post(`http://localhost:3000/artists/add-song/${id}`, {
-                name,
-                composer,
-                image_song,
-                url,
-            });
+            const response = await axios.post(
+                `http://localhost:3000/artists/add-song/${id}`,
+                {
+                    name,
+                    composer,
+                    image_song,
+                    url,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                },
+            );
             setMessage('User created successfully!');
+            setComposer('');
             setName('');
             setImageSong('');
+            setImageAlbum('');
+            setUrl('');
         } catch (error) {
             console.error('Error creating user:', error);
             setMessage('Error creating user');
@@ -46,13 +55,14 @@ function CreateSong() {
                     <input type="text" value={composer} onChange={(e) => setComposer(e.target.value)} required />
                 </div>
                 <div>
-                    <label>Image_song:</label>
+                    <label>Image song:</label>
                     <input type="text" value={image_song} onChange={(e) => setImageSong(e.target.value)} required />
                 </div>
                 <div>
-                    <label>Url:</label>
+                    <label>Url sound:</label>
                     <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
                 </div>
+
                 <button type="submit">Create Song</button>
             </form>
             {message && <p>{message}</p>}

@@ -9,12 +9,14 @@ const Artist = new Schema(
         name: { type: String },
         artist: { type: String },
         image_artist: { type: String },
+        image_album: { type: String },
         genre: { type: String },
         songs: [
             {
                 name: { type: String },
                 image_song: { type: String },
                 url: { type: String },
+                composer: { type: String },
             },
         ],
         createdAt: { type: Date, default: Date.now },
