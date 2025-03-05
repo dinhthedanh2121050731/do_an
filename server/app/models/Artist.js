@@ -17,6 +17,7 @@ const Artist = new Schema(
                 image_song: { type: String },
                 url: { type: String },
                 composer: { type: String },
+                duration: { type: String },
             },
         ],
         createdAt: { type: Date, default: Date.now },

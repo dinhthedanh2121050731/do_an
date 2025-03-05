@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '~/ultis/httpsRequest';
 
 function Protected() {
     const [data, setData] = useState(null);
@@ -10,7 +11,7 @@ function Protected() {
             const token = localStorage.getItem('token');
 
             try {
-                const response = await axios.get('http://localhost:3000/users/protected', {
+                const response = await api.get('users/protected', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setData(response.data);

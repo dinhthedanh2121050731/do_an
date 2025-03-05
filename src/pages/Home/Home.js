@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import styles from './Home.module.scss';
 import SectionArtist from '~/layouts/components/SectionArtist/SectionArtist';
+import api from '~/ultis/httpsRequest';
 
 const cx = classNames.bind(styles);
 function Home() {
@@ -13,11 +14,10 @@ function Home() {
     const [singer, getSinger] = useState([]);
     useEffect(() => {
         const fetchArtists = async () => {
-            const token = localStorage.getItem('token');
             try {
-                const responseArtists = await axios.get('http://localhost:3000/artists');
-                const responseRapper = await axios.get('http://localhost:3000/artists/rapper');
-                const responseSinger = await axios.get('http://localhost:3000/artists/singer');
+                const responseArtists = await api.get('artists/random-artists');
+                const responseRapper = await api.get('artists/rapper');
+                const responseSinger = await api.get('artists/singer');
                 getArists(responseArtists.data);
                 getRapper(responseRapper.data);
                 getSinger(responseSinger.data);

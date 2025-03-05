@@ -13,7 +13,7 @@ function CardItem({ noBorderImg, dataUser, bio }) {
         <div
             className={cx('card')}
             onClick={() => {
-                navigate(`/artist/${dataUser.name}`, { state: dataUser });
+                navigate(`/artist/${dataUser.name}`);
             }}
         >
             <Image src={dataUser.image_artist} className={cx('image', { noborder: noBorderImg })} />

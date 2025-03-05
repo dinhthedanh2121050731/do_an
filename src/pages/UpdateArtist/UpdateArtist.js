@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import style from './UpdateArtist.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '~/config/config';
+import api from '~/ultis/httpsRequest';
 
 const cx = classNames.bind(style);
 
@@ -22,8 +23,8 @@ function UpdateArtist() {
         const token = localStorage.getItem('token');
         try {
             const fetchApi = async () => {
-                const res = await axios.put(
-                    `http://localhost:3000/artists/update-artist/${data._id}`,
+                const res = await api.put(
+                    `artists/update-artist/${data._id}`,
                     {
                         name,
                         artist,

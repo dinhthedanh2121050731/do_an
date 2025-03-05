@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './AdminShowArtist.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '~/ultis/httpsRequest';
 
 const cx = classNames.bind(style);
 
@@ -17,8 +18,8 @@ function AdminShowArtist() {
         const fetchArtists = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.delete(`http://localhost:3000/artists/delete-artist/${id}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                const res = await api.delete(`artists/delete-artist/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
                 });
                 const updatedArtists = artists.filter((artist) => artist._id !== id);
                 setArtists(updatedArtists);
@@ -33,8 +34,8 @@ function AdminShowArtist() {
         const fetchArtists = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.delete(`http://localhost:3000/artists/destroy-artist/${id}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                const res = await api.delete(`artists/destroy-artist/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
                 });
                 const updatedArtists = artists.filter((artist) => artist._id !== id);
                 setArtists(updatedArtists);
@@ -49,7 +50,7 @@ function AdminShowArtist() {
     useEffect(() => {
         const fetchArtists = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/artists');
+                const res = await api.get('artists');
                 setArtists(res.data);
             } catch (error) {
                 console.error(error);

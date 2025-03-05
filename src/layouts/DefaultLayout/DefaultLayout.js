@@ -11,10 +11,8 @@ function DefaultLayout({ children }) {
         <div className={cx('wrapper', 'container-fluid')}>
             <Header />
             <div className={cx('row', 'container')}>
-                <div className={cx('col-2')}>
-                    <Sidebar />
-                </div>
-                <div className={cx('col-10', 'content')}>
+                <Sidebar />
+                <div className={cx('col', 'content')}>
                     {children}
                     <FooterContent />
                 </div>

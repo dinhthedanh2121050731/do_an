@@ -8,22 +8,22 @@ import Image from '~/components/Image';
 import style from './Footer.module.scss';
 import { DataMusicContext } from '~/context/AppProvider';
 import { Link } from 'react-router-dom';
+import images from '~/assets/images';
 
 const cx = classNames.bind(style);
 
 function Footer() {
     // Lấy state từ context data music
-    const { dataMusic, idMusic, play, setPlay } = useContext(DataMusicContext);
+    const { dataMusic, idMusic, play, setPlay, setIdMusic } = useContext(DataMusicContext);
     const controllerStorage = JSON.parse(localStorage.getItem('controller')) ?? false;
     const volumeStorage = localStorage.getItem('volume');
     // Tạo State
     const [data, setData] = useState(dataMusic[idMusic] ?? []);
     const [currentIndex, setCurrentIndex] = useState(idMusic);
-    const [shuffle, setShuffle] = useState(controllerStorage.shuffle || false);
-    const [repeat, setRepeat] = useState(controllerStorage.repeat || false);
+    const [shuffle, setShuffle] = useState(controllerStorage?.shuffle || false);
+    const [repeat, setRepeat] = useState(controllerStorage?.repeat || false);
     const [volume, setVolume] = useState(volumeStorage || 0);
     const [textDesc, setTextDesc] = useState([]);
-    console.log(volumeStorage);
     // Tạo Ref
     const audioRef = useRef();
     const inputProcessBarRef = useRef();
@@ -97,6 +97,7 @@ function Footer() {
                 if (currentIndex < dataMusic.length - 1) {
                     setCurrentIndex((prev) => prev + 1);
                     setData(dataMusic[currentIndex + 1]);
+                    setIdMusic(currentIndex);
                 } else {
                     setCurrentIndex(0);
                     setData(dataMusic[0]);
@@ -140,6 +141,9 @@ function Footer() {
                     localStorage.setItem('volume', audio.volume);
                     setVolume(audio.volume);
                 };
+            },
+            setIndexMusic: function () {
+                setIdMusic(currentIndex);
             },
 
             // Hàm xử lý event
@@ -199,6 +203,7 @@ function Footer() {
                 this.handleEvents();
                 this.loadTimeDuration();
                 this.volumeSong();
+                this.setIndexMusic();
             },
         };
         app.start();
@@ -226,7 +231,12 @@ function Footer() {
         setCurrentIndex(idMusic);
     }, [idMusic, dataMusic]);
     useEffect(() => {
-        const texts = data.composer.split(',');
+        let texts;
+        if (data?.composer.includes(' ')) {
+            texts = data?.composer?.split(', ');
+        } else {
+            texts = data?.composer?.split(',');
+        }
         setTextDesc(texts);
     }, [data]);
 
@@ -234,16 +244,14 @@ function Footer() {
         <div className={cx('footer')}>
             <div className={cx('wrapper')}>
                 <div className={cx('left-content')}>
-                    <Image src={data.image_song || 'https://via.placeholder.com/150'} className={cx('img')} />
+                    <Image src={data?.image_song || images.noImage} className={cx('img')} />
                     <div className={cx('track-details')}>
-                        <div className={cx('text-head')}>{data.name}</div>
+                        <div className={cx('text-head')}>{data?.name}</div>
                         <div ref={textDescRef} className={cx('text-wrap-name')}>
                             {textDesc.map((text, index) => (
-                                // <Link key={index}>
-                                <div key={index} className={cx('text-desc')}>
-                                    {text}
-                                </div>
-                                // </Link>
+                                <Link key={index} to={`/artist/${text}`}>
+                                    <div className={cx('text-desc')}>{text},</div>
+                                </Link>
                             ))}
                         </div>
                     </div>
@@ -306,8 +314,7 @@ function Footer() {
                         </span>
                     </div>
                 </div>
-
-                <div className={cx('volume-control')}>
+                <div className={cx('wrapper-volume')}>
                     <div
                         style={{
                             width: 30,
@@ -319,19 +326,24 @@ function Footer() {
                     >
                         {renderIconVolumes()}
                     </div>
-                    <input
-                        ref={inputVolumeControlRef}
-                        defaultValue={volume}
-                        className={cx('input-volume-control')}
-                        type="range"
-                        min="0"
-                        step="0.1"
-                        max="1"
-                    />
-                    <nav ref={inputVolumeControlBackGroundRef} className={cx('input-volume-control_background')}></nav>
+                    <div className={cx('volume-control')}>
+                        <input
+                            ref={inputVolumeControlRef}
+                            defaultValue={volume}
+                            className={cx('input-volume-control')}
+                            type="range"
+                            min="0"
+                            step="0.1"
+                            max="1"
+                        />
+                        <nav
+                            ref={inputVolumeControlBackGroundRef}
+                            className={cx('input-volume-control_background')}
+                        ></nav>
+                    </div>
                 </div>
             </div>
-            <audio ref={audioRef} src={data.url} type="audio/mp3" />
+            <audio ref={audioRef} src={data?.url} type="audio/mp3" />
         </div>
     );
 }

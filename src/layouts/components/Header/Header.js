@@ -11,6 +11,7 @@ import MenuItem from '~/components/MenuItem';
 import config from '~/config/config';
 import styles from './Header.module.scss';
 import img from '~/assets/images/rounded-in-photoretrica.png';
+import api from '~/ultis/httpsRequest';
 
 import FormUser from '../FormUser';
 const cx = classNames.bind(styles);
@@ -22,7 +23,7 @@ function Header() {
             const token = localStorage.getItem('token');
             try {
                 if (token) {
-                    const responseProtected = await axios.get('http://localhost:3000/users/protected', {
+                    const responseProtected = await api.get('users/protected', {
                         headers: { Authorization: `Bearer ${token}` },
                     });
 

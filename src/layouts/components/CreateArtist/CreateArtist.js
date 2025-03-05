@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './CreateArtist.module.scss';
+import api from '~/ultis/httpsRequest';
 const cx = classNames.bind(styles);
 function CreateArtist() {
     const [artist, setArtist] = useState(' ');
@@ -16,8 +17,8 @@ function CreateArtist() {
         const token = localStorage.getItem('token');
         // Gửi dữ liệu đến backend
         try {
-            const response = await axios.post(
-                'http://localhost:3000/artists/add-artist',
+            const response = await api.post(
+                'artists/add-artist',
                 {
                     artist,
                     image_artist,

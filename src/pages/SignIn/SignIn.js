@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppContext, AppProvider } from '~/context/AppProvider';
+import api from '~/ultis/httpsRequest';
 
 function SignIn() {
     const [password, setPassword] = useState('');
@@ -13,7 +14,7 @@ function SignIn() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/users/login', {
+            const response = await api.post('users/login', {
                 email,
                 password,
             });

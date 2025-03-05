@@ -180,13 +180,18 @@
     height: 3px;
     background-color: #fff;
 }
+.wrapper-volume {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .volume-control {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 10vw;
-    margin: 0 10px;
+    width: 6vw;
+    margin: 0 6px;
     &:hover .input-volume-control_background {
         height: 4px;
         background: #04aa6d;

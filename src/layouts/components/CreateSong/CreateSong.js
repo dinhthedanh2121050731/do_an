@@ -1,42 +1,49 @@
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './CreateSong.module.scss';
+import api from '~/ultis/httpsRequest';
 const cx = classNames.bind(styles);
 function CreateSong() {
     const [name, setName] = useState('');
     const [composer, setComposer] = useState('');
     const [image_song, setImageSong] = useState('');
     const [url, setUrl] = useState('');
+    const [duration, setDuration] = useState('');
     const [message, setMessage] = useState('');
     const params = useParams();
     const id = params.id;
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         const token = localStorage.getItem('token');
         e.preventDefault();
 
         // Gửi dữ liệu đến backend
         try {
-            const response = await axios.post(
-                `http://localhost:3000/artists/add-song/${id}`,
-                {
-                    name,
-                    composer,
-                    image_song,
-                    url,
-                },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                },
-            );
-            setMessage('User created successfully!');
-            setComposer('');
-            setName('');
-            setImageSong('');
-            setImageAlbum('');
-            setUrl('');
+            const fetchApi = async () => {
+                const response = await api.post(
+                    `artists/add-song/${id}`,
+                    {
+                        name,
+                        composer,
+                        image_song,
+                        url,
+                        duration,
+                    },
+                    {
+                        headers: { Authorization: `Bearer ${token}` },
+                    },
+                );
+                setMessage('User created successfully!');
+                setComposer('');
+                setName('');
+                setImageSong('');
+                setImageAlbum('');
+                setUrl('');
+                navigate('/admin/artist/artist-admin-show');
+            };
+            fetchApi();
         } catch (error) {
             console.error('Error creating user:', error);
             setMessage('Error creating user');
@@ -45,7 +52,7 @@ function CreateSong() {
     return (
         <div className={cx('wrapper')}>
             <h1>Create Song</h1>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div>
                     <label>Name:</label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
@@ -62,8 +69,14 @@ function CreateSong() {
                     <label>Url sound:</label>
                     <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
                 </div>
+                <div>
+                    <label>Duration sound:</label>
+                    <input type="text" value={duration} onChange={(e) => setDuration(e.target.value)} required />
+                </div>
 
-                <button type="submit">Create Song</button>
+                <button onClick={handleSubmit} type="submit">
+                    Create Song
+                </button>
             </form>
             {message && <p>{message}</p>}
         </div>

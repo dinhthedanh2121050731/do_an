@@ -11,7 +11,9 @@ router.put('/update-artist/:id', verifyAdmin, artistsController.updateArtist);
 router.delete('/delete-artist/:id', verifyAdmin, artistsController.forceDeteted);
 router.delete('/destroy-artist/:id', verifyAdmin, artistsController.destroy);
 router.get('/rapper', artistsController.showRapper);
+router.get('/get-album/:name', artistsController.getAlbum);
 router.get('/singer', artistsController.showSinger);
+router.get('/random-artists', artistsController.randomArtist);
 router.get('/', artistsController.showArtist);
 
 module.exports = router;
