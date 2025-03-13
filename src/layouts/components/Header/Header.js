@@ -14,6 +14,7 @@ import img from '~/assets/images/rounded-in-photoretrica.png';
 import api from '~/ultis/httpsRequest';
 
 import FormUser from '../FormUser';
+import Search from '../Search';
 const cx = classNames.bind(styles);
 function Header() {
     const [user, setUser] = useState();
@@ -51,19 +52,7 @@ function Header() {
                         </div>
                     </Tippy>
 
-                    <div className={cx('search')}>
-                        <SearchIcon className={cx('search-icon')} />
-                        <input className={cx('input')} type="text" placeholder="Bạn muốn phát nội dung gì?" />
-                        <Tippy delay={[500, 300]} placement="bottom" content="Duyệt tìm kiếm">
-                            <div>
-                                <MenuItem
-                                    icon={<BrowseIcon />}
-                                    activeIcon={<BrowseActiveIcon />}
-                                    to={config.routes.search}
-                                />
-                            </div>
-                        </Tippy>
-                    </div>
+                    <Search />
                 </div>
                 {!user ? (
                     <div

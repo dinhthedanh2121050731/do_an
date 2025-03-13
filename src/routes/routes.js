@@ -8,7 +8,7 @@ import AdminShowArtist from '~/pages/AdminShowArtist';
 import Home from '~/pages/Home';
 import Profile from '~/pages/Profile';
 import ProfileArtist from '~/pages/ProfileArtist';
-import Search from '~/pages/Search';
+import SearchPage from '~/pages/SearchPage';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/Signup/Signup';
 import UpdateArtist from '~/pages/UpdateArtist';
@@ -26,7 +26,7 @@ const publicRoutes = [
 
     {
         path: config.routes.search,
-        component: Search,
+        component: SearchPage,
     },
     {
         path: config.routes.signup,

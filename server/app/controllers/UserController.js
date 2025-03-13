@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { useReducer } = require('react');
 require('dotenv').config();
 class UserController {
     async show(req, res) {

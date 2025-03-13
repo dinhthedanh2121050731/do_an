@@ -34,7 +34,6 @@ function Footer() {
     const prevIconRef = useRef();
     const inputVolumeControlRef = useRef();
     const inputVolumeControlBackGroundRef = useRef();
-    const textDescRef = useRef();
 
     // Hàm xử lý volume
     const renderIconVolumes = useCallback(() => {
@@ -59,7 +58,6 @@ function Footer() {
         const prevIcon = prevIconRef.current;
         const inputVolumeControl = inputVolumeControlRef.current;
         const inputVolumeControlBackGround = inputVolumeControlBackGroundRef.current;
-        const textDesc = textDescRef.current;
 
         const duration = audio.duration;
 
@@ -124,7 +122,7 @@ function Footer() {
             },
             // Hàm set time out
             setTimeDelay: function (delay) {
-                const defaultDelay = 300;
+                const defaultDelay = 1000;
                 setPlay(false);
                 setTimeout(() => {
                     setPlay(true);
@@ -149,21 +147,36 @@ function Footer() {
             // Hàm xử lý event
             handleEvents: function () {
                 const _this = this;
-                if (play) {
-                    audio.play();
-                    audio.ontimeupdate = function () {
-                        const currentTime = audio.currentTime;
-                        const processTime = (currentTime / duration) * 100;
-                        inputProcessBackground.style.width = `${processTime}%`;
-                        inputProcessBar.value = `${processTime}`;
-                        _this.loadTimeCurrent();
-                    };
-                    audio.onended = function () {
-                        if (repeat) {
-                            audio.loop = true;
-                            audio.play();
-                        } else {
-                            audio.loop = false;
+                if (audio) {
+                    if (play) {
+                        audio.play();
+                        audio.ontimeupdate = function () {
+                            const currentTime = audio.currentTime;
+                            const processTime = (currentTime / duration) * 100;
+                            inputProcessBackground.style.width = `${processTime}%`;
+                            inputProcessBar.value = `${processTime}`;
+                            _this.loadTimeCurrent();
+                        };
+                        audio.onended = function () {
+                            if (repeat) {
+                                audio.loop = true;
+                                audio.play();
+                            } else {
+                                audio.loop = false;
+                                if (shuffle) {
+                                    _this.randomSong();
+                                    _this.setTimeDelay();
+                                } else {
+                                    _this.nextSong();
+                                    _this.setTimeDelay();
+                                }
+                            }
+                        };
+                        inputProcessBar.oninput = function (e) {
+                            const newTime = (e.target.value / 100) * duration;
+                            audio.currentTime = newTime;
+                        };
+                        nextIcon.onclick = () => {
                             if (shuffle) {
                                 _this.randomSong();
                                 _this.setTimeDelay();
@@ -171,32 +184,19 @@ function Footer() {
                                 _this.nextSong();
                                 _this.setTimeDelay();
                             }
-                        }
-                    };
-                    inputProcessBar.oninput = function (e) {
-                        const newTime = (e.target.value / 100) * duration;
-                        audio.currentTime = newTime;
-                    };
-                    nextIcon.onclick = () => {
-                        if (shuffle) {
-                            _this.randomSong();
-                            _this.setTimeDelay();
-                        } else {
-                            _this.nextSong();
-                            _this.setTimeDelay();
-                        }
-                    };
-                    prevIcon.onclick = () => {
-                        if (shuffle) {
-                            _this.randomSong();
-                            _this.setTimeDelay();
-                        } else {
-                            _this.prevSong();
-                            _this.setTimeDelay();
-                        }
-                    };
-                } else {
-                    audio.pause();
+                        };
+                        prevIcon.onclick = () => {
+                            if (shuffle) {
+                                _this.randomSong();
+                                _this.setTimeDelay();
+                            } else {
+                                _this.prevSong();
+                                _this.setTimeDelay();
+                            }
+                        };
+                    } else {
+                        audio.pause();
+                    }
                 }
             },
             start: function () {
@@ -208,7 +208,6 @@ function Footer() {
         };
         app.start();
         return () => {
-            audio.pause();
             audio.ontimeupdate = null;
             audio.onended = null;
             inputProcessBar.oninput = null;
@@ -232,7 +231,7 @@ function Footer() {
     }, [idMusic, dataMusic]);
     useEffect(() => {
         let texts;
-        if (data?.composer.includes(' ')) {
+        if (data?.composer?.includes(' ')) {
             texts = data?.composer?.split(', ');
         } else {
             texts = data?.composer?.split(',');
@@ -247,10 +246,13 @@ function Footer() {
                     <Image src={data?.image_song || images.noImage} className={cx('img')} />
                     <div className={cx('track-details')}>
                         <div className={cx('text-head')}>{data?.name}</div>
-                        <div ref={textDescRef} className={cx('text-wrap-name')}>
-                            {textDesc.map((text, index) => (
+                        <div className={cx('text-wrap-name')}>
+                            {textDesc?.map((text, index) => (
                                 <Link key={index} to={`/artist/${text}`}>
-                                    <div className={cx('text-desc')}>{text},</div>
+                                    <div className={cx('text-desc')}>
+                                        {text}
+                                        {index < textDesc?.length - 1 && ', '}
+                                    </div>
                                 </Link>
                             ))}
                         </div>

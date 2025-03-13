@@ -23,6 +23,7 @@
         "express": "^4.21.1",
         "fast-average-color": "^9.4.0",
         "jsonwebtoken": "^9.0.2",
+        "lodash.debounce": "^4.0.8",
         "mongoose": "^8.8.4",
         "mongoose-delete": "^1.0.2",
         "mongoose-sequence": "^6.0.1",

@@ -2,6 +2,18 @@
     position: relative;
     width: 3.2rem;
     height: 3.2rem;
-    border-radius: 50%;
     object-fit: cover;
+}
+.small {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 4px;
+}
+.large {
+    width: 9.2rem;
+    height: 9.2rem;
+    border-radius: 6px;
+}
+.border {
+    border-radius: 50%;
 }

@@ -8,6 +8,5 @@ class HomeController {
             console.log(err);
         }
     }
-    create(req, res) {}
 }
 module.exports = new HomeController();

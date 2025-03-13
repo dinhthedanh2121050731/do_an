@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import tinycolor from 'tinycolor2';
@@ -8,18 +8,16 @@ import style from './ProfileArtist.module.scss';
 import { DataMusicContext } from '~/context/AppProvider';
 import Image from '~/components/Image';
 import { PauseIcon, PlayIcon } from '~/components/Icon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import api from '~/ultis/httpsRequest';
+import SongLists from '~/components/SongLists';
 
 const cx = classNames.bind(style);
 function ProfileArtist() {
     const { name } = useParams();
 
-    const { idMusic, play, dataMusic, setDataMusic, setIdMusic, setPlay } = useContext(DataMusicContext);
+    const { play } = useContext(DataMusicContext);
 
     const [dominantColor, setDominantColor] = useState(null);
-    const [hoverId, setHoverId] = useState(false);
     const [data, setData] = useState([]);
 
     const headerControlRef = useRef();
@@ -54,45 +52,6 @@ function ProfileArtist() {
         };
     });
 
-    const handleMouseEnter = useCallback(
-        (index) => {
-            setHoverId(index);
-        },
-        [hoverId],
-    );
-
-    const handleMouseLeave = useCallback(() => {
-        setHoverId(null);
-    }, [hoverId]);
-
-    const containerIcon = useCallback(
-        (song, index) => {
-            return hoverId !== index ? (
-                <div>
-                    {index == idMusic && dataMusic[idMusic].name == song.name && play ? (
-                        <div className={cx('music-icon')}>
-                            <div className={cx('bar')}></div>
-                            <div className={cx('bar')}></div>
-                            <div className={cx('bar')}></div>
-                            <div className={cx('bar')}></div>
-                        </div>
-                    ) : (
-                        <span
-                            className={cx('text-center', {
-                                active: index == idMusic && dataMusic[idMusic].name == song.name,
-                            })}
-                        >
-                            {index + 1}
-                        </span>
-                    )}
-                </div>
-            ) : (
-                <PauseIcon />
-            );
-        },
-        [hoverId, play],
-    );
-
     useEffect(() => {
         const fac = new FastAverageColor();
         fac.getColorAsync(data?.image_album)
@@ -126,45 +85,7 @@ function ProfileArtist() {
                     </div>
                     <span className={cx('container-top_text')}>Phổ biển</span>
                 </div>
-                <div className={cx('container-center')}>
-                    {data?.songs?.length > 0 ? (
-                        data.songs.map((song, index) => {
-                            return (
-                                <div
-                                    onMouseEnter={() => handleMouseEnter(index)}
-                                    onMouseLeave={handleMouseLeave}
-                                    key={index}
-                                    className={cx('center-container_item')}
-                                >
-                                    <div className={cx('song-list')}>{containerIcon(song, index)}</div>
-
-                                    <Image src={song.image_song} className={cx('image-song')} />
-                                    <div
-                                        className={cx('text-center', {
-                                            active: index == idMusic && dataMusic[idMusic].name == song.name,
-                                        })}
-                                        onClick={() => {
-                                            setIdMusic(index);
-                                            setPlay(true);
-                                            setDataMusic(data.songs);
-                                        }}
-                                        key={index}
-                                    >
-                                        {song.name}
-                                    </div>
-                                    <div className={cx('track-options')}>
-                                        <div className={cx('duration-song')}>{song.duration}</div>
-                                        {hoverId === index && (
-                                            <FontAwesomeIcon icon={faEllipsis} className={cx('icon-ellipsis')} />
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <div>Loading....</div>
-                    )}
-                </div>
+                <SongLists data={data} />
             </div>
         </div>
     );
