@@ -4,7 +4,7 @@ const usersRouter = require('./users');
 const searchRouter = require('./search');
 function route(app) {
     app.use('/artists', artistsRouter);
-    app.use('/users', usersRouter);
+    app.use('/auth', usersRouter);
     app.use('/search', searchRouter);
     app.use('/', homeRouter);
 }

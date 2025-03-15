@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypts = require('bcrypt');
-const SECRET_KEY = 'abc';
 const SALT_ROUND = 10;
 
 const User = new Schema({
+    googleId: { type: String, unique: true, sparse: true },
+    facebookId: { type: String, unique: true, sparse: true },
     username: { type: String, required: false },
     email: { type: String, required: true },
-    password: { type: String, required: true },
+    password: { type: String },
+    avatar: { type: String, unique: true, sparse: true },
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

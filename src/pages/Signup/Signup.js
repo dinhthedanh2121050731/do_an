@@ -9,7 +9,7 @@ function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('users/register', {
+            const response = await api.post('auth/register', {
                 username,
                 email,
                 password,

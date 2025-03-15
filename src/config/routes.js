@@ -4,7 +4,7 @@ const routes = {
     profile: '/profile/:nickname',
     search: '/search',
     signup: '/signup',
-    signin: '/signin',
+    login: '/login',
     createArtist: '/admin/artist/artist-create',
     createSong: '/admin/artist/song-create/:id',
     adminShowArtist: '/admin/artist/artist-admin-show',

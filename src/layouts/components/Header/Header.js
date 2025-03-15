@@ -23,13 +23,18 @@ function Header() {
         const fetchUser = async () => {
             const token = localStorage.getItem('token');
             try {
-                if (token) {
-                    const responseProtected = await api.get('users/protected', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
+                // if (token) {
+                //     const responseProtected = await api.get('auth/protected', {
+                //         headers: { Authorization: `Bearer ${token}` },
+                //     });
 
-                    setUser(responseProtected.data.user);
-                }
+                //     return setUser(responseProtected.data.user);
+                // }
+                const resIsMe = await api.get('auth/me', {
+                    withCredentials: 'include', // Gửi cookie session
+                });
+                console.log(resIsMe);
+                return setUser(resIsMe.data);
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
@@ -64,8 +69,8 @@ function Header() {
                         <Link to={config.routes.signup}>
                             <div className={cx('register')}>Đăng ký</div>
                         </Link>
-                        <Link to={config.routes.signin}>
-                            <div className={cx('signin')}>Đăng nhập</div>
+                        <Link to={config.routes.login}>
+                            <div className={cx('login')}>Đăng nhập</div>
                         </Link>
                     </div>
                 ) : (

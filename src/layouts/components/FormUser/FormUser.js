@@ -5,9 +5,10 @@ import classNames from 'classnames/bind';
 import style from './FormUser.module.scss';
 import { AccessIcon } from '~/components/Icon';
 import Image from '~/components/Image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import config from '~/config/config';
 import { Link } from 'react-router-dom';
+import api from '~/ultis/httpsRequest';
 const cx = classNames.bind(style);
 const menuItem = [
     {
@@ -38,8 +39,22 @@ function FormUser({ user }) {
     const roleAdmin = user.role === 'admin';
 
     const handleLogOut = () => {
-        localStorage.removeItem('token');
-        window.location.href = '/';
+        const token = localStorage?.getItem('token');
+        if (token) {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+        const fetchApi = async () => {
+            try {
+                const res = await api.get('auth/logout', {
+                    withCredentials: 'include',
+                });
+                window.location.href = '/';
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchApi();
     };
     const handleClickItem = (item) => {
         if (item.children) {
@@ -92,7 +107,7 @@ function FormUser({ user }) {
                             }}
                             className={cx('user-background')}
                         >
-                            <Image />
+                            <Image src={user?.avatar} border />
                         </div>
                     </Tippy>
                 </div>

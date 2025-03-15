@@ -34,7 +34,7 @@ const publicRoutes = [
         layout: NoHeaderAndSidebar,
     },
     {
-        path: config.routes.signin,
+        path: config.routes.login,
         component: SignIn,
         layout: NoHeaderAndSidebar,
     },

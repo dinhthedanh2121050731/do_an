@@ -11,7 +11,7 @@ function Protected() {
             const token = localStorage.getItem('token');
 
             try {
-                const response = await api.get('users/protected', {
+                const response = await api.get('auth/protected', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setData(response.data);

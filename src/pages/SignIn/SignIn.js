@@ -10,11 +10,18 @@ function SignIn() {
     const [token, setToken] = useState('');
     const navigate = useNavigate();
     const { user, setUser } = useContext(AppContext);
+    const handleGoogleLogin = () => {
+        window.location.href = 'http://localhost:3000/auth/google';
+    };
+
+    const handleFacebookLogin = () => {
+        window.location.href = 'http://localhost:3000/auth/facebook';
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('users/login', {
+            const response = await api.post('auth/login', {
                 email,
                 password,
             });
@@ -47,6 +54,8 @@ function SignIn() {
                     name="password"
                     placeholder="Password"
                 />
+                <button onClick={handleGoogleLogin}>Login with Google</button>
+                <button onClick={handleFacebookLogin}>Login with Facebook</button>
                 <button type="submit">Sign In</button>
             </form>
         </div>

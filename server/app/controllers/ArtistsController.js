@@ -2,7 +2,7 @@ const Artist = require('../models/Artist');
 class HomeController {
     async showArtist(req, res) {
         try {
-            let limit = parseInt(req.params.limit) || 5;
+            let limit = parseInt(req.params.limit) || 6;
             limit = limit > 20 ? 20 : limit;
             const artist = await Artist.aggregate([{ $sort: { name: 1 } }, { size: limit }]);
             res.status(200).json(artist);
@@ -12,7 +12,7 @@ class HomeController {
     }
     async randomArtist(req, res) {
         try {
-            let limit = parseInt(req.params.limit) || 5;
+            let limit = parseInt(req.params.limit) || 6;
             limit = limit > 20 ? 20 : limit;
             const artist = await Artist.aggregate([{ $sample: { size: limit } }]);
             res.status(200).json(artist);
@@ -22,7 +22,7 @@ class HomeController {
     }
     async showRapper(req, res) {
         try {
-            let limit = parseInt(req.params.limit) || 5;
+            let limit = parseInt(req.params.limit) || 6;
             limit = limit > 20 ? 20 : limit;
             const artist = await Artist.aggregate([{ $match: { genre: 'Rapper' } }, { $limit: limit }]);
             res.status(200).json(artist);
@@ -32,7 +32,7 @@ class HomeController {
     }
     async showSinger(req, res) {
         try {
-            let limit = parseInt(req.params.limit) || 5;
+            let limit = parseInt(req.params.limit) || 6;
             limit = limit > 20 ? 20 : limit;
             const artist = await Artist.aggregate([{ $match: { genre: 'Singer' } }, { $limit: limit }]);
             res.status(200).json(artist);

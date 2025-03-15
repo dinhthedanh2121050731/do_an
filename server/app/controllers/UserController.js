@@ -51,9 +51,26 @@ class UserController {
             res.status(500).json({ message: 'Error creating user', error: err });
         }
     }
+    async logout(req, res) {
+        req.logout((err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Đăng xuất thất bại!' });
+            }
+            req.session.destroy(() => {
+                res.clearCookie('connect.sid');
+                res.json({ message: 'Đăng xuất thành công' });
+            });
+        });
+    }
+    async me(req, res) {
+        if (req.user) {
+            return res.json(req.user ?? null); // Trả về thông tin user nếu đã đăng nhập
+        } else {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+    }
     async protected(req, res) {
         const user = await User.findById(req.user.id);
-        console.log(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
