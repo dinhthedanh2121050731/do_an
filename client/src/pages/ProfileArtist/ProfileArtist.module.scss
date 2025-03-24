@@ -1,0 +1,212 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: 1000px;
+    background-color: var(--color-primary);
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+}
+.header-control {
+    contain: content;
+    display: none;
+    z-index: 9999;
+    background-color: var(--color-background);
+    position: fixed;
+    top: 64px;
+    right: 15px;
+    left: 30vw;
+    padding: 12px 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    animation: to-bottom 0.3s ease-in-out;
+}
+
+@keyframes to-bottom {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.text-control {
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+.head {
+    position: relative;
+    overflow: hidden;
+}
+.image-head {
+    contain: strict;
+    display: block;
+    height: 320px !important;
+    width: 100% !important;
+    overflow: overlay;
+    opacity: 0.6;
+    background-attachment: scroll;
+    background-position: 50% 15%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    transform: scale(1.1);
+}
+.text-head {
+    position: absolute;
+    z-index: 999;
+    top: 50px;
+    left: 20px;
+    color: var(--white);
+    font-size: 8rem;
+    font-weight: 800;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+}
+.container-top {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px;
+    width: 100%;
+    background: linear-gradient(180deg, var(--color-background), var(--color-primary));
+}
+.container-top-control {
+    display: flex;
+    align-items: center;
+}
+.background-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--black);
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.following {
+    color: #fff;
+    border: 1px solid var(--white);
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.container-top_text {
+    margin-top: 20px;
+    font-size: 2.4rem;
+    font-weight: 600;
+}
+.container-center {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.center-container_item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        cursor: pointer;
+    }
+}
+.song-list {
+    height: 24px;
+    width: 24px;
+}
+.image-song {
+    border-radius: 3px !important;
+    height: 40px;
+    width: 40px;
+    margin: 0 12px 0 14px;
+}
+.text-center {
+    font-size: 1.6rem;
+    color: var(--white);
+    flex-grow: 1;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.track-options {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 80px;
+}
+.duration-song {
+    font-size: 1.4rem;
+    color: #959595;
+    margin-right: 14px;
+}
+.icon-ellipsis {
+    color: white;
+}
+.text-number {
+    font-size: 1.6rem;
+}
+.active {
+    color: var(--primary);
+}
+.music-icon {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    width: 24px;
+    height: 24px;
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        height: 10px;
+        width: 100%;
+        background-color: var(--color-primary);
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+    }
+}
+
+.bar {
+    width: 2px;
+    height: 100%;
+    background-color: var(--primary);
+    animation: bounce 0.6s infinite ease-in-out;
+    overflow: hidden;
+    &:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+
+    &:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    &:nth-child(4) {
+        animation-delay: 0.3s;
+    }
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0.3);
+    }
+}

@@ -1,0 +1,38 @@
+.section {
+    margin-bottom: 20px;
+    height: 258px;
+    border-radius: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.text {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 700;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.see-more {
+    font-size: 1.4rem;
+    color: #b3b3b3;
+    font-weight: 600;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+.container {
+    display: flex;
+    justify-content: space-evenly;
+}

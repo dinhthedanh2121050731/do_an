@@ -1,0 +1,108 @@
+.wrapper {
+    background-color: var(--color-primary);
+    padding: 8px 20px;
+    border-radius: 8px;
+}
+.header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+.text-header {
+    padding: 6px 12px;
+    font-size: 1.4rem;
+    margin-right: 12px;
+    background-color: var(--color-primary-2);
+    border-radius: 20px;
+    cursor: pointer;
+    &.active {
+        background-color: #fff;
+        color: black;
+    }
+    &:not(.active):hover {
+        background-color: #333333;
+    }
+}
+.container {
+    display: flex;
+}
+.result-track {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+.container-text-head {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.result-track_item {
+    background-color: #181818;
+    width: 372px;
+    padding: 20px;
+    border-radius: 6px;
+    &:hover {
+        background-color: var(--color-primary-2);
+    }
+}
+.result-track_name_song {
+    color: #fff;
+    margin-top: 20px;
+    font-size: 3.2rem;
+    font-weight: 900;
+    max-width: 330px;
+    overflow-wrap: break-word;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+.result-track_artist_wrap {
+    display: flex;
+    align-items: center;
+}
+.text-desc {
+    font-size: 1.2rem;
+    margin-top: 2px;
+    color: #959595;
+    cursor: pointer;
+    &:not(:first-child) {
+        margin-left: 3px;
+    }
+    &:hover {
+        text-decoration: underline;
+        color: #fff;
+    }
+}
+.result-track_span {
+    font-size: 1.4rem;
+    color: #ccc;
+    margin-right: 16px;
+    opacity: 0.8;
+}
+.result-track_artist_song {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 1.4rem;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -8px;
+        transform: translate(-50%, -50%);
+        width: 4px;
+        height: 4px;
+        background-color: #ccc;
+        border-radius: 50%;
+    }
+}
+.list-song {
+    width: 100%;
+}

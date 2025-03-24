@@ -1,0 +1,19 @@
+.wrapper {
+    position: relative;
+    width: 3.2rem;
+    height: 3.2rem;
+    object-fit: cover;
+}
+.small {
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 4px;
+}
+.large {
+    width: 9.2rem;
+    height: 9.2rem;
+    border-radius: 6px;
+}
+.border {
+    border-radius: 50%;
+}
