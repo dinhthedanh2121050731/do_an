@@ -5,10 +5,11 @@ import classNames from 'classnames/bind';
 import style from './FormUser.module.scss';
 import { AccessIcon } from '~/components/Icon';
 import Image from '~/components/Image';
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import config from '~/config/config';
 import { Link } from 'react-router-dom';
 import api from '~/ultis/httpsRequest';
+import { AppContext } from '~/context/AppProvider';
 const cx = classNames.bind(style);
 const menuItem = [
     {
@@ -36,6 +37,8 @@ const menuItem = [
 function FormUser({ user }) {
     const [isHidden, setIsHidden] = useState(false);
     const [menuItems, setMenuItems] = useState(menuItem);
+    const { setUser } = useContext(AppContext);
+
     const roleAdmin = user.role === 'admin';
 
     const handleLogOut = () => {
@@ -49,6 +52,8 @@ function FormUser({ user }) {
                 console.log(err);
             }
         };
+        localStorage.removeItem('user');
+        setUser('');
         fetchApi();
     };
     const handleClickItem = (item) => {
@@ -87,7 +92,7 @@ function FormUser({ user }) {
                 placement="bottom"
                 visible={isHidden}
                 interactive
-                render={renderNavUserForm}
+                render={(attrs) => renderNavUserForm(attrs)}
             >
                 <div>
                     <Tippy delay={[500, 300]} interactive placement="bottom" content={user.username}>

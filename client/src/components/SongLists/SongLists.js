@@ -72,6 +72,23 @@ function SongLists({ data }) {
     const handleDragStart = useCallback((e, song) => {
         e.dataTransfer.setData('song', JSON.stringify(song));
         e.dataTransfer.effectAllowed = 'copy';
+
+        window.dragData = e.currentTarget;
+        // Tạo một span chứa tên
+        const dragIcon = document.createElement('span');
+        dragIcon.textContent = song.name;
+        dragIcon.style.fontSize = '16px';
+        dragIcon.style.fontWeight = 'bold';
+        dragIcon.style.color = '#fff';
+        dragIcon.style.background = '#2a2929';
+        dragIcon.style.padding = '4px 14px';
+        dragIcon.style.borderRadius = '5px';
+
+        // Thêm vào body nhưng không hiển thị
+        document.body.appendChild(dragIcon);
+
+        // Đặt hình ảnh kéo thành tên khối
+        e.dataTransfer.setDragImage(dragIcon, 10, 10);
     }, []);
 
     return (
@@ -81,10 +98,11 @@ function SongLists({ data }) {
                     return (
                         <div
                             draggable="true"
-                            id={song._id}
+                            id={song?._id}
                             onDragStart={(e) => handleDragStart(e, song)}
                             onMouseEnter={() => handleMouseEnter(index)}
                             onMouseLeave={handleMouseLeave}
+                            data-zone="song"
                             key={index}
                             className={cx('center-container_item')}
                         >

@@ -9,11 +9,7 @@ function SectionArtist({ text, noBorderImg, dataUser, bio }) {
                 <div className={cx('text')}>{text}</div>
                 <span className={cx('see-more')}>Hiện tất cả</span>
             </div>
-            <div className={cx('container')}>
-                {dataUser.map((user, index) => (
-                    <CardItem bio={bio} key={index} noBorderImg={noBorderImg} dataUser={user} />
-                ))}
-            </div>
+            <CardItem bio={bio} noBorderImg={noBorderImg} dataUser={dataUser} />
         </div>
     );
 }

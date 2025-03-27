@@ -48,9 +48,19 @@
         cursor: pointer;
     }
 }
+.nav-tab_text {
+    padding: 4px 12px;
+    background-color: #2a2929;
+    border-radius: 20px;
+    font-size: 1.4rem;
+    margin-right: 10px;
+    cursor: pointer;
+    &:hover {
+        background-color: #403e3e;
+    }
+}
 .create-playlist-wrap {
     height: 45vh;
-    overflow-y: overlay;
     margin-top: 50px;
 }
 .create-playlist-li {

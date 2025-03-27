@@ -10,5 +10,6 @@ const routes = {
     adminShowArtist: '/admin/artist/artist-admin-show',
     updateArtist: '/admin/artist/artist-update/:id',
     profileArtist: '/artist/:name',
+    collectionTrack: '/collection/tracks',
 };
 export default routes;

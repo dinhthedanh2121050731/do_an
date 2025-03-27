@@ -1,12 +1,12 @@
 import config from '~/config/config';
 import NoHeaderAndSidebar from '~/layouts/NoHeaderAndSidebar';
 import AdminShowArtist from '~/pages/AdminShowArtist';
+import CollectionTrack from '~/pages/CollectionTrack';
 import CreateArtist from '~/pages/CreateArtist';
 import CreateSong from '~/pages/CreateSong';
 
 // layouts
 import Home from '~/pages/Home';
-import Profile from '~/pages/Profile';
 import ProfileArtist from '~/pages/ProfileArtist';
 import SearchPage from '~/pages/SearchPage';
 import SignIn from '~/pages/SignIn';
@@ -20,8 +20,8 @@ const publicRoutes = [
     },
 
     {
-        path: config.routes.profile,
-        component: Profile,
+        path: config.routes.collectionTrack,
+        component: CollectionTrack,
     },
 
     {
