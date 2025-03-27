@@ -2,24 +2,47 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Image from '~/components/Image';
 import config from '~/config/config';
+import api from '~/ultis/httpsRequest';
+import { AccessIcon } from '../Icon';
 import style from './UserSongItem.module.scss';
 const cx = classNames.bind(style);
 
-function UserSongItem({ data, refSong, refArtist }) {
+function UserSongItem({ data, refSong, refArtist, setIsHasData, setDataFollow }) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [activeMenu, setActiveMenu] = useState(null);
 
-    const renderOptions = (attrs) => (
+    const handleDeleteFollow = async (id) => {
+        try {
+            const res = await api.delete(`auth/delete-follow/${id}`, {
+                withCredentials: true,
+            });
+            setIsHasData(true);
+            setDataFollow((prevs) =>
+                prevs.filter((prev) => prev._id.toString() !== res.data.followDelete._id.toString()),
+            );
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const renderOptions = (attrs, id) => (
         <div className={cx('context-menu')} tabIndex="-1" {...attrs}>
-            <span className={cx('menu-item')}> Xóa khỏi Thư viện</span>
             <span className={cx('menu-item')}>
-                <FontAwesomeIcon className={cx('background-icon')} icon={faCheck} /> Loại bỏ khỏi hồ sơ yêu thích
+                <FontAwesomeIcon
+                    onClick={() => handleDeleteFollow(id)}
+                    className={cx('background-icon')}
+                    icon={faCheck}
+                />{' '}
+                Loại bỏ khỏi hồ sơ yêu thích
             </span>
-            <span className={cx('menu-item')}>Chia sẻ</span>
+            <span className={cx('menu-item')}>
+                <AccessIcon className={cx('icon')} />
+                Chia sẻ
+            </span>
         </div>
     );
     const handleContextMenu = (event, artistID) => {
@@ -55,9 +78,8 @@ function UserSongItem({ data, refSong, refArtist }) {
                                 placement="right"
                                 // offset={[position.x, -position.y]}
                                 visible={activeMenu === artist._id}
-                                followCursor={'Initial'}
                                 interactive
-                                render={(attrs) => renderOptions(attrs)}
+                                render={(attrs) => renderOptions(attrs, artist?._id)}
                                 appendTo={document.body}
                             >
                                 <NavLink

@@ -1,11 +1,10 @@
 import classNames from 'classnames/bind';
 
-import { BrowseActiveIcon, BrowseIcon, HomeActiveIcon, HomeIcon, SearchIcon } from '~/components/Icon';
+import { HomeActiveIcon, HomeIcon, SearchIcon } from '~/components/Icon';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import axios from 'axios';
 
 import MenuItem from '~/components/MenuItem';
 import config from '~/config/config';

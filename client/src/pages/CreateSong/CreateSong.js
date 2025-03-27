@@ -31,7 +31,7 @@ function CreateSong() {
                         duration,
                     },
                     {
-                        withCredentials: true,
+                        withCredentials: 'include',
                     },
                 );
                 setMessage('User created successfully!');

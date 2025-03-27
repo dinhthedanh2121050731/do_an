@@ -140,10 +140,33 @@ class UserController {
       if (!isHasFollow) {
         user.follow.push(artist);
         await user.save();
+        res.status(200).json({ message: "Follow added successfully" });
       }
-      res.status(200).json({ message: "Follow added successfully" });
     } catch (err) {
-      res.status(500).json({ message: "Error found", error: err });
+      res.status(500).json({ message: "Error added", error: err });
+    }
+  }
+  // [Delete] Follow
+  async deleteFollow(req, res) {
+    try {
+      const user = await User.findById(req.user.id);
+      const { id } = req.params;
+      let followDelete;
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+      user.follow = user.follow.filter((follow) => {
+        if (follow._id.toString() == id) {
+          followDelete = follow;
+        }
+        return follow._id.toString() !== id;
+      });
+      await user.save();
+      res
+        .status(200)
+        .json({ message: "Follow deleted successfully", followDelete });
+    } catch (err) {
+      res.status(500).json({ message: "Error deleted", error: err });
     }
   }
   // [Get] Follow

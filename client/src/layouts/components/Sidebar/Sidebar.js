@@ -16,8 +16,6 @@ function Sidebar() {
     const refSong = useRef();
     const refArtist = useRef();
 
-    useEffect(() => {}, [isHasData]);
-
     useEffect(() => {
         const fetchApi = async () => {
             try {
@@ -131,7 +129,13 @@ function Sidebar() {
 
             {isHasData ? (
                 <div onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}>
-                    <Library refSong={refSong} refArtist={refArtist} data={{ dataFavoriteSongs, dataFollow }} />
+                    <Library
+                        setDataFollow={setDataFollow}
+                        setIsHasData={setIsHasData}
+                        refSong={refSong}
+                        refArtist={refArtist}
+                        data={{ dataFavoriteSongs, dataFollow }}
+                    />
                 </div>
             ) : (
                 <div>

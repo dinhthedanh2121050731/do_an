@@ -55,5 +55,11 @@ router.get(
     failureRedirect: "http://localhost:3001/login",
   })
 );
+// [Delete] /delete-follow
+router.delete(
+  "/delete-follow/:id",
+  authentication,
+  UserController.deleteFollow
+);
 
 module.exports = router;
