@@ -15,7 +15,7 @@ function UpdateArtist() {
     const [role, setRole] = useState(data.role);
     const [genre, setGenre] = useState(data.genre);
     const [imageArtist, setImageArtist] = useState(data.imageArtist);
-    const [imageAlbum, setImageAblum] = useState(data.imageAlbum);
+    const [imageProfileArtist, setImageAblum] = useState(data.imageProfileArtist);
     const navigate = useNavigate();
 
     const handleUpdate = useCallback((e) => {
@@ -29,7 +29,7 @@ function UpdateArtist() {
                         role,
                         genre,
                         imageArtist,
-                        imageAlbum,
+                        imageProfileArtist,
                     },
                     {
                         withCredentials: 'include', // Gửi cookie session
@@ -96,14 +96,14 @@ function UpdateArtist() {
                 />
             </div>
             <div className={cx('item')}>
-                <label htmlFor="name">Image Album:</label>
+                <label htmlFor="name">Image ProfileArtist:</label>
                 <input
                     onChange={(e) => setImageAblum(e.target.value)}
-                    value={imageAlbum}
+                    value={imageProfileArtist}
                     type="text"
                     id="imageArtist"
                     name="imageArtist"
-                    placeholder={data.imageAlbum}
+                    placeholder={data.imageProfileArtist}
                 />
             </div>
             <button onClick={(e) => handleUpdate(e)}>Cập nhật</button>

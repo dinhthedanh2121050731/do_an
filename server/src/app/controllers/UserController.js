@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Artist = require("../models/Artist");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Song = require("../models/Song");
 require("dotenv").config();
 class UserController {
   // [Get] all
@@ -94,22 +95,66 @@ class UserController {
   async addFavoriteSong(req, res) {
     try {
       const user = await User.findById(req.user.id);
-      const song = req.body.song;
-      const { _id } = song;
-      console.log(req.body.song);
+      const id = req.body.id;
+
+      const songData = await Song.findById({ _id: id });
+
       if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
-      const isHasFavSong = user.favoritePlaylist.some((favSong) => {
-        return favSong?._id.toString() === _id;
-      });
-      if (!isHasFavSong) {
-        user.favoritePlaylist.push(song);
-        await user.save();
+      if (!songData) {
+        return res.status(404).json({ message: "Song not found" });
       }
-      res.status(200).json({ message: "Favorite song added successfully" });
+
+      if (user.favoritePlaylist.includes({ _id: id })) {
+        return res
+          .status(401)
+          .json({ message: "Song is already in favorites" });
+      }
+      // Kiểm tra nếu user đã thích bài hát này
+      if (songData.favoriteBy.includes(user._id)) {
+        return res
+          .status(400)
+          .json({ message: "User already liked this song" });
+      }
+      user.favoritePlaylist.push({ _id: id });
+      songData.favoriteBy.push(user._id);
+      await songData.save();
+      await user.save();
+
+      res.status(200).json({ message: "Added to favorite songs", user });
     } catch (err) {
       res.status(500).json({ message: "Error creating user", error: err });
+    }
+  }
+  // [Delete] Favorite Song
+
+  async deleteFavoriteSong(req, res) {
+    try {
+      const user = await User.findById(req.user.id);
+
+      const { id } = req.params;
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+      user.favoritePlaylist = user.favoritePlaylist.filter((songId) => {
+        if (songId.toString() !== id) {
+        }
+        return songId.toString() !== id;
+      });
+
+      await user.save();
+
+      await Song.updateOne(
+        { _id: id },
+        { $pull: { favoriteBy: user._id } } // Xoá user._id khỏi favoriteBy
+      );
+      res.status(200).json({
+        message: "Favorite song deleted successfully",
+        dataFavoriteSong: user.favoritePlaylist,
+      });
+    } catch (err) {
+      console.log(err);
     }
   }
   // [Get] Favorite Song
@@ -120,7 +165,23 @@ class UserController {
         return res.status(401).json({ message: "User not found" });
       }
 
-      res.status(200).json({ data: user.favoritePlaylist });
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5;
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+
+      const favoriteSongs = await Song.find({ favoriteBy: { $in: [user._id] } })
+        .populate("favoriteBy", "name imageSong url composer duration")
+        .skip(startIndex)
+        .limit(limit)
+        .exec();
+
+      res.status(200).json({
+        data: favoriteSongs,
+        currentPage: page,
+        hasMore: endIndex < user.favoritePlaylist.length,
+        length: user.favoritePlaylist,
+      });
     } catch (err) {
       res.status(500).json({ message: "Error found", error: err });
     }
@@ -141,6 +202,8 @@ class UserController {
         user.follow.push(artist);
         await user.save();
         res.status(200).json({ message: "Follow added successfully" });
+      } else {
+        return res.status(401).json({ message: "Follow not successfully" });
       }
     } catch (err) {
       res.status(500).json({ message: "Error added", error: err });

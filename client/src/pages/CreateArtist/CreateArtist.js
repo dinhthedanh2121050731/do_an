@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 function CreateArtist() {
     const [artist, setArtist] = useState(' ');
     const [image_artist, setImageArtist] = useState(' ');
-    const [image_album, setImageAlbum] = useState('');
+    const [imageProfileArtist, setImageProfileArtist] = useState('');
     const [name, setName] = useState(' ');
     const [genre, setGenre] = useState(' ');
     const [message, setMessage] = useState(' ');
@@ -23,7 +23,7 @@ function CreateArtist() {
                     image_artist,
                     name,
                     genre,
-                    image_album,
+                    imageProfileArtist,
                 },
                 {
                     withCredentials: true,
@@ -34,7 +34,7 @@ function CreateArtist() {
             setImageArtist('');
             setName('');
             setGenre('');
-            setImageAlbum('');
+            setImageProfileArtist('');
         } catch (error) {
             console.error('Error creating user:', error);
             setMessage('Error creating user');
@@ -61,8 +61,13 @@ function CreateArtist() {
                     <input type="text" value={image_artist} onChange={(e) => setImageArtist(e.target.value)} required />
                 </div>
                 <div>
-                    <label>Image album:</label>
-                    <input type="text" value={image_album} onChange={(e) => setImageAlbum(e.target.value)} required />
+                    <label>Image Profile Artist:</label>
+                    <input
+                        type="text"
+                        value={imageProfileArtist}
+                        onChange={(e) => setImageProfileArtist(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <button type="submit">Create Artist</button>

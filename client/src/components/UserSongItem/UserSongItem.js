@@ -2,25 +2,26 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
-import { forwardRef, useCallback, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import Image from '~/components/Image';
 import config from '~/config/config';
+import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
 import api from '~/ultis/httpsRequest';
 import { AccessIcon } from '../Icon';
 import style from './UserSongItem.module.scss';
 const cx = classNames.bind(style);
 
-function UserSongItem({ data, refSong, refArtist, setIsHasData, setDataFollow }) {
+function UserSongItem({ data, refSong, refArtist }) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [activeMenu, setActiveMenu] = useState(null);
+    const { setDataFollow } = useContext(UpdateDataSidebarContext);
 
     const handleDeleteFollow = async (id) => {
         try {
             const res = await api.delete(`auth/delete-follow/${id}`, {
                 withCredentials: true,
             });
-            setIsHasData(true);
             setDataFollow((prevs) =>
                 prevs.filter((prev) => prev._id.toString() !== res.data.followDelete._id.toString()),
             );
@@ -36,7 +37,7 @@ function UserSongItem({ data, refSong, refArtist, setIsHasData, setDataFollow })
                     onClick={() => handleDeleteFollow(id)}
                     className={cx('background-icon')}
                     icon={faCheck}
-                />{' '}
+                />
                 Loại bỏ khỏi hồ sơ yêu thích
             </span>
             <span className={cx('menu-item')}>
@@ -52,7 +53,7 @@ function UserSongItem({ data, refSong, refArtist, setIsHasData, setDataFollow })
     };
     return (
         <div>
-            {data[0]?.composer ? (
+            {!data[0]?.role ? (
                 <NavLink
                     style={{ border: '2px solid transparent' }}
                     ref={refSong}
@@ -84,10 +85,10 @@ function UserSongItem({ data, refSong, refArtist, setIsHasData, setDataFollow })
                             >
                                 <NavLink
                                     onContextMenu={(e) => handleContextMenu(e, artist._id)}
-                                    to={`/artist/${artist.name}`}
+                                    to={`/artist/${artist._id}`}
                                     className={(nav) => cx('content-item', { active: nav.isActive })}
                                 >
-                                    <Image small src={artist?.imageArtist} />
+                                    <Image border small src={artist?.imageArtist} />
                                     <div className={cx('content-head')}>
                                         <div className={cx('content-text')}>{artist?.name}</div>
                                         <div className={cx('content-desc')}>{artist?.role}</div>

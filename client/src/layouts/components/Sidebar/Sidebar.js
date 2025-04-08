@@ -1,7 +1,8 @@
 import classNames from 'classnames/bind';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { LibraryIcon, PlusSignIcon } from '~/components/Icon';
 import MenuItem from '~/components/MenuItem';
+import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
 import api from '~/ultis/httpsRequest';
 import Library from '../Library';
 import styles from './Sidebar.module.scss';
@@ -9,9 +10,8 @@ import styles from './Sidebar.module.scss';
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-    const [dataFavoriteSongs, setDataFavoriteSongs] = useState([]);
-    const [dataFollow, setDataFollow] = useState([]);
-    const [isHasData, setIsHasData] = useState(false); // State theo dõi dữ liệu
+    const { dataFavoriteSong, setDataFavoriteSong, isHasData, setIsHasData, dataFollow, setDataFollow } =
+        useContext(UpdateDataSidebarContext);
 
     const refSong = useRef();
     const refArtist = useRef();
@@ -22,7 +22,7 @@ function Sidebar() {
                 const resFavoriteSong = await api.get('auth/favorite-song', { withCredentials: true });
                 const resFollow = await api.get('auth/follow', { withCredentials: true });
 
-                setDataFavoriteSongs(resFavoriteSong.data.data);
+                setDataFavoriteSong(resFavoriteSong.data.length);
                 setDataFollow(resFollow.data.data);
                 // Cập nhật trạng thái dữ liệu
                 setIsHasData(resFavoriteSong.data.data.length > 0 || resFollow.data.data.length > 0);
@@ -40,11 +40,15 @@ function Sidebar() {
         const dataSong = e.dataTransfer.getData('song');
         if (refArtist.current) {
             refArtist.current.style.border = '2px solid transparent';
-            refSong.current.style.opacity = '1';
+            if (refSong.current) {
+                refSong.current.style.opacity = '1';
+            }
         }
         if (refSong.current) {
             refSong.current.style.border = '2px solid transparent';
-            refArtist.current.style.opacity = '1';
+            if (refArtist.current) {
+                refArtist.current.style.opacity = '1';
+            }
         }
 
         if (dataArtist) {
@@ -62,10 +66,11 @@ function Sidebar() {
 
         if (dataSong) {
             const parseData = JSON.parse(dataSong);
+            console.log(parseData);
             try {
-                const res = await api.post('auth/add-favorite-song', { song: parseData }, { withCredentials: true });
+                const res = await api.post('auth/add-favorite-song', { id: parseData._id }, { withCredentials: true });
                 if (res.status === 200) {
-                    setDataFavoriteSongs((prev) => [...prev, parseData]);
+                    setDataFavoriteSong((prev) => [...prev, parseData]);
                     setIsHasData(true); // Cập nhật UI ngay lập tức
                 }
             } catch (err) {
@@ -81,13 +86,17 @@ function Sidebar() {
         if (refArtist.current) {
             if (window?.dragData?.getAttribute('data-zone') === 'artist') {
                 refArtist.current.style.border = '2px solid #3be477';
-                refSong.current.style.opacity = '0.4';
+                if (refSong.current) {
+                    refSong.current.style.opacity = '0.4';
+                }
             }
         }
         if (refSong.current) {
             if (window?.dragData?.getAttribute('data-zone') === 'song') {
                 refSong.current.style.border = '2px solid #3be477';
-                refArtist.current.style.opacity = '0.4';
+                if (refArtist.current) {
+                    refArtist.current.style.opacity = '0.4';
+                }
             }
         }
     }, []);
@@ -96,11 +105,15 @@ function Sidebar() {
 
         if (refArtist.current) {
             refArtist.current.style.border = '2px solid transparent';
-            refSong.current.style.opacity = '1';
+            if (refSong.current) {
+                refSong.current.style.opacity = '1';
+            }
         }
         if (refSong.current) {
             refSong.current.style.border = '2px solid transparent';
-            refArtist.current.style.opacity = '1';
+            if (refArtist.current) {
+                refArtist.current.style.opacity = '1';
+            }
         }
     }, []);
 
@@ -131,10 +144,9 @@ function Sidebar() {
                 <div onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}>
                     <Library
                         setDataFollow={setDataFollow}
-                        setIsHasData={setIsHasData}
                         refSong={refSong}
                         refArtist={refArtist}
-                        data={{ dataFavoriteSongs, dataFollow }}
+                        data={{ dataFavoriteSong, dataFollow }}
                     />
                 </div>
             ) : (

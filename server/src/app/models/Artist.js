@@ -9,17 +9,10 @@ const Artist = new Schema(
     name: { type: String },
     role: { type: String },
     imageArtist: { type: String },
-    imageAlbum: { type: String },
+    imageProfileArtist: { type: String },
     genre: { type: String },
     songs: [
-      {
-        _id: { type: Schema.Types.ObjectId },
-        name: { type: String },
-        imageSong: { type: String },
-        url: { type: String },
-        composer: { type: String },
-        duration: { type: String },
-      },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Song" }, // Mảng ObjectId tham chiếu đến các bài hát
     ],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

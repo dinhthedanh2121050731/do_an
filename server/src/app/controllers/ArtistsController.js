@@ -50,7 +50,8 @@ class HomeController {
   }
   async addArtist(req, res) {
     try {
-      const { artist, image_artist, name, genre, image_album } = req.body;
+      const { artist, image_artist, name, genre, imageProfileArtist } =
+        req.body;
       const hadArtist = await Artist.findOne({
         name: { $regex: new RegExp(`^${name}$`, "i") },
       });
@@ -62,7 +63,7 @@ class HomeController {
         image_artist,
         name,
         genre,
-        image_album,
+        imageProfileArtist,
       });
       await newArtist.save();
       res
@@ -72,24 +73,14 @@ class HomeController {
       res.status(500).json({ message: "Error creating artist", err });
     }
   }
-  async addSong(req, res) {
-    try {
-      const { id } = req.params;
-      const { name, composer, image_song, url, duration } = req.body;
-      const artist = await Artist.findById(id);
-      artist.songs.push({ name, composer, image_song, url, duration });
-      await artist.save();
-    } catch (err) {
-      res.status(500).json({ message: "Error creating song", err });
-    }
-  }
   async updateArtist(req, res) {
     try {
       const { id } = req.params;
-      const { artist, image_artist, name, genre, image_album } = req.body;
+      const { artist, image_artist, name, genre, imageProfileArtist } =
+        req.body;
       const updatedArtist = await Artist.updateOne(
         { _id: id },
-        { artist, image_artist, name, genre, image_album }
+        { artist, image_artist, name, genre, imageProfileArtist }
       );
       res.status(200).json({
         message: "Artist updated successfully",
@@ -123,11 +114,11 @@ class HomeController {
       res.status(500).json({ message: "Error deleting artist", err });
     }
   }
-  async getAlbum(req, res) {
+  async getArtistPopular(req, res) {
     try {
-      const { name } = req.params;
-      const getAlbum = await Artist.findOne({ name: name });
-      res.status(200).json({ artist: getAlbum });
+      const { id } = req.params;
+      const getArtistPopular = await Artist.findOne({ _id: id });
+      res.status(200).json({ artist: getArtistPopular });
     } catch (err) {
       res.status(500).json({ message: "Error artist found", err });
     }

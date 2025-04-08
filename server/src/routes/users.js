@@ -61,5 +61,9 @@ router.delete(
   authentication,
   UserController.deleteFollow
 );
-
+router.delete(
+  "/delete-favorite-song/:id",
+  authentication,
+  UserController.deleteFavoriteSong
+);
 module.exports = router;

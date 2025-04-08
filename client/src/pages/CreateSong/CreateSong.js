@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 function CreateSong() {
     const [name, setName] = useState('');
     const [composer, setComposer] = useState('');
-    const [image_song, setImageSong] = useState('');
+    const [imageSong, setImageSong] = useState('');
     const [url, setUrl] = useState('');
     const [duration, setDuration] = useState('');
     const [message, setMessage] = useState('');
@@ -26,7 +26,7 @@ function CreateSong() {
                     {
                         name,
                         composer,
-                        image_song,
+                        imageSong,
                         url,
                         duration,
                     },
@@ -38,7 +38,7 @@ function CreateSong() {
                 setComposer('');
                 setName('');
                 setImageSong('');
-                setImageAlbum('');
+                setImageProfileArtist('');
                 setUrl('');
                 navigate('/admin/artist/artist-admin-show');
             };
@@ -62,7 +62,7 @@ function CreateSong() {
                 </div>
                 <div>
                     <label>Image song:</label>
-                    <input type="text" value={image_song} onChange={(e) => setImageSong(e.target.value)} required />
+                    <input type="text" value={imageSong} onChange={(e) => setImageSong(e.target.value)} required />
                 </div>
                 <div>
                     <label>Url sound:</label>

@@ -28,6 +28,7 @@ function SearchPage() {
                 const res = await api.get(`search?q=${query}&limit=${3}`);
                 setDataArtist(res?.data?.dataArtist);
                 setDataSongs(res?.data?.dataSongs);
+                console.log(res.data);
             } catch (error) {
                 console.log(error);
             }

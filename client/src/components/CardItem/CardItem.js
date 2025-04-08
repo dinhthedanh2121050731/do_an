@@ -43,7 +43,7 @@ function CardItem({ noBorderImg, dataUser, bio }) {
                     className={cx('card')}
                     data-zone="artist"
                     onClick={() => {
-                        navigate(`/artist/${user.name}`);
+                        navigate(`/artist/${user?._id}`);
                     }}
                 >
                     <Image src={user.imageArtist} className={cx('image', { noborder: noBorderImg })} />

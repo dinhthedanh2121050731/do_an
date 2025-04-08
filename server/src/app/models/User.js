@@ -13,12 +13,8 @@ const User = new Schema({
   role: { type: String, enum: ["admin", "user"], default: "user" },
   favoritePlaylist: [
     {
-      _id: { type: mongoose.Schema.Types.ObjectId },
-      name: { type: String },
-      imageSong: { type: String },
-      url: { type: String },
-      composer: { type: String },
-      duration: { type: String },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Song",
       createdAt: { type: Date, default: Date.now },
       updatedAt: { type: Date, default: Date.now },
     },
@@ -29,7 +25,7 @@ const User = new Schema({
       name: { type: String },
       role: { type: String },
       imageArtist: { type: String },
-      imageAlbum: { type: String },
+      imageProfileArtist: { type: String },
       genre: { type: String },
     },
   ],

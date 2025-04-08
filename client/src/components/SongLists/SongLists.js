@@ -1,19 +1,37 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-
-import style from './SongLists.module.scss';
-import { DataMusicContext } from '~/context/AppProvider';
-import Image from '~/components/Image';
-import { PauseIcon, PlayIcon } from '~/components/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEllipsis, faPlus } from '@fortawesome/free-solid-svg-icons';
+import HeadlessTippy from '@tippyjs/react/headless';
+import style from './SongLists.module.scss';
+import Image from '~/components/Image';
+import { AccessIcon, PauseIcon } from '~/components/Icon';
+import { DataMusicContext } from '~/context/DataMusicProvider';
 import api from '~/ultis/httpsRequest';
+import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
 
 const cx = classNames.bind(style);
 function SongLists({ data }) {
     const { idMusic, play, dataMusic, setDataMusic, setIdMusic, setPlay } = useContext(DataMusicContext);
+    const { setIsHasData, setDataFavoriteSong, dataFavoriteSong } = useContext(UpdateDataSidebarContext);
 
     const [hoverId, setHoverId] = useState(false);
+    const [activeMenu, setActiveMenu] = useState(null);
+    const [isMatch, setIsMatch] = useState(false);
+
+    useEffect(() => {
+        const fetchApi = async (pageNum) => {
+            try {
+                const res = await api.get(`auth/favorite-song?page=${pageNum}&limit=5`, {
+                    withCredentials: true,
+                });
+                setDataFavoriteSong(res.data.length);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchApi();
+    }, []);
 
     let dataSong;
     if (data?.hasOwnProperty('songs')) {
@@ -91,48 +109,129 @@ function SongLists({ data }) {
         e.dataTransfer.setDragImage(dragIcon, 10, 10);
     }, []);
 
+    const handleDeleteFavorite = async (song) => {
+        try {
+            const res = await api.delete(`auth/delete-favorite-song/${song._id}`, {
+                withCredentials: true,
+            });
+            setIsMatch(false);
+            setDataFavoriteSong((prevs) => prevs.filter((prev) => prev !== song._id));
+            setIsHasData(true);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    const handleFavorite = async (song) => {
+        try {
+            const res = await api.post(
+                `auth/add-favorite-song`,
+                {
+                    id: song._id,
+                },
+                {
+                    withCredentials: true,
+                },
+            );
+            setIsMatch(true);
+            setDataFavoriteSong((prev) => [...prev, song]);
+            setIsHasData(true); // Cập nhật UI ngay lập tức
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const renderOptions = (attrs, song) => {
+        return (
+            <div className={cx('context-menu')} tabIndex="-1" {...attrs}>
+                {isMatch ? (
+                    <div className={cx('menu-item')}>
+                        <FontAwesomeIcon
+                            onClick={() => handleDeleteFavorite(song)}
+                            className={cx('background-icon')}
+                            icon={faCheck}
+                        />
+                        Loại bỏ khỏi hồ sơ yêu thích
+                    </div>
+                ) : (
+                    <div className={cx('menu-item')}>
+                        <FontAwesomeIcon
+                            onClick={() => handleFavorite(song)}
+                            className={cx('background-icon', { active: true })}
+                            icon={faPlus}
+                        />
+                        Thêm vào hồ sơ yêu thích
+                    </div>
+                )}
+                <span className={cx('menu-item')}>
+                    <AccessIcon className={cx('icon')} />
+                    Chia sẻ
+                </span>
+            </div>
+        );
+    };
+    const handleContextMenu = (event, id) => {
+        event.preventDefault(); // Chặn menu mặc định của trình duyệt
+        // setPosition({ x: event.clientX, y: event.clientY });
+        setActiveMenu(id);
+        if (dataFavoriteSong) {
+            setIsMatch(dataFavoriteSong.some((songId) => id === songId));
+        }
+    };
+
     return (
         <div className={cx('container-center')}>
             {dataSong?.length >= 0 ? (
                 dataSong?.map((song, index) => {
                     return (
-                        <div
-                            draggable="true"
-                            id={song?._id}
-                            onDragStart={(e) => handleDragStart(e, song)}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                            data-zone="song"
+                        <HeadlessTippy
                             key={index}
-                            className={cx('center-container_item')}
+                            onClickOutside={() => setActiveMenu(null)}
+                            placement="top"
+                            // offset={[position.x, -position.y]}
+                            visible={activeMenu === song._id}
+                            interactive
+                            render={(attrs) => renderOptions(attrs, song)}
+                            appendTo={document.body}
                         >
-                            <div className={cx('song-list')}>{containerIcon(song, index)}</div>
-
-                            <Image src={song?.imageSong} className={cx('image-song')} />
                             <div
-                                className={cx('text-center', {
-                                    active: index == idMusic && dataMusic[idMusic]?.name == song?.name,
-                                })}
-                                onClick={() => {
-                                    setIdMusic(index);
-                                    setDataMusic(dataSong);
-                                    setPlay(true);
-                                }}
+                                onContextMenu={(e) => handleContextMenu(e, song._id)}
+                                draggable="true"
+                                id={song?._id}
+                                onDragStart={(e) => handleDragStart(e, song)}
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={handleMouseLeave}
+                                data-zone="song"
                                 key={index}
+                                className={cx('center-container_item')}
                             >
-                                {song.name}
+                                <div className={cx('song-list')}>{containerIcon(song, index)}</div>
+
+                                <Image src={song?.imageSong} className={cx('image-song')} />
+                                <div
+                                    className={cx('text-center', {
+                                        active: index == idMusic && dataMusic[idMusic]?.name == song?.name,
+                                    })}
+                                    onClick={() => {
+                                        setIdMusic(index);
+                                        setDataMusic(dataSong);
+                                        setPlay(true);
+                                    }}
+                                    key={index}
+                                >
+                                    {song.name}
+                                </div>
+                                <div className={cx('track-options')}>
+                                    <div className={cx('duration-song')}>{song.duration}</div>
+                                    {hoverId === index && (
+                                        <FontAwesomeIcon icon={faEllipsis} className={cx('icon-ellipsis')} />
+                                    )}
+                                </div>
                             </div>
-                            <div className={cx('track-options')}>
-                                <div className={cx('duration-song')}>{song.duration}</div>
-                                {hoverId === index && (
-                                    <FontAwesomeIcon icon={faEllipsis} className={cx('icon-ellipsis')} />
-                                )}
-                            </div>
-                        </div>
+                        </HeadlessTippy>
                     );
                 })
             ) : (
-                <div>Loading....</div>
+                <TailSpin height="80" width="100%" color="#4fa94d" ariaLabel="circles-loading" visible={true} />
             )}
         </div>
     );

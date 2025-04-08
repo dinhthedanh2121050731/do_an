@@ -1,14 +1,13 @@
-import axios from 'axios';
 import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AppContext, AppProvider } from '~/context/AppProvider';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '~/context/AppProvider';
 import api from '~/ultis/httpsRequest';
 
 function SignIn() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
-    const { user, setUser } = useContext(AppContext);
+    const { setUser } = useContext(AppContext);
     const handleGoogleLogin = () => {
         window.location.href = 'http://localhost:3000/auth/google';
     };

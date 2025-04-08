@@ -11,9 +11,7 @@ function Image({ src, alt, className, border, large, small, ...props }) {
         border,
         [className]: className,
     });
-    return (
-        <img src={src || images.noImage} alt={'anh_default ' || alt} className={classes} {...props} loading="lazy" />
-    );
+    return <img src={src || images.noImage} className={classes} {...props} loading="lazy" />;
 }
 
 export default Image;

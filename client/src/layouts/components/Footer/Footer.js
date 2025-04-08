@@ -6,9 +6,9 @@ import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState }
 import { NextIcon, PauseIcon, PlayIcon, PreviousIcon, RepeatIcon, ShuffleIcon } from '~/components/Icon';
 import Image from '~/components/Image';
 import style from './Footer.module.scss';
-import { DataMusicContext } from '~/context/AppProvider';
 import { Link } from 'react-router-dom';
 import images from '~/assets/images';
+import { DataMusicContext } from '~/context/DataMusicProvider';
 
 const cx = classNames.bind(style);
 
@@ -225,7 +225,7 @@ function Footer() {
             setTimeout(() => {
                 setPlay(true);
                 setVolume(volumeStorage);
-            }, 500);
+            }, 1000);
         }
         setCurrentIndex(idMusic);
     }, [idMusic, dataMusic]);
