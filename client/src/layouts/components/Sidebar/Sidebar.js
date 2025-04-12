@@ -26,12 +26,13 @@ function Sidebar() {
                 setDataFollow(resFollow.data.data);
                 // Cập nhật trạng thái dữ liệu
                 setIsHasData(resFavoriteSong.data.data.length > 0 || resFollow.data.data.length > 0);
+                console.log(dataFollow);
             } catch (err) {
                 console.log('Fetch API Error:', err);
             }
         };
         fetchApi();
-    }, []); // Chỉ chạy 1 lần khi component mount
+    }, []);
 
     // Khi kéo thả vào Sidebar
     const handleDrop = useCallback(async (e) => {

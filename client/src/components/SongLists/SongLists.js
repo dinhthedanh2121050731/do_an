@@ -9,6 +9,8 @@ import { AccessIcon, PauseIcon } from '~/components/Icon';
 import { DataMusicContext } from '~/context/DataMusicProvider';
 import api from '~/ultis/httpsRequest';
 import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { pauseSong } from '~/redux/playerSlice';
 
 const cx = classNames.bind(style);
 function SongLists({ data }) {
@@ -18,6 +20,9 @@ function SongLists({ data }) {
     const [hoverId, setHoverId] = useState(false);
     const [activeMenu, setActiveMenu] = useState(null);
     const [isMatch, setIsMatch] = useState(false);
+
+    const dispatch = useDispatch();
+    const { isPlaying, currentSongId, currentSongData } = useSelector((state) => state.player);
 
     useEffect(() => {
         const fetchApi = async (pageNum) => {
@@ -31,7 +36,7 @@ function SongLists({ data }) {
             }
         };
         fetchApi();
-    }, []);
+    }, [dataFavoriteSong.length]);
 
     let dataSong;
     if (data?.hasOwnProperty('songs')) {
@@ -215,6 +220,11 @@ function SongLists({ data }) {
                                         setIdMusic(index);
                                         setDataMusic(dataSong);
                                         setPlay(true);
+                                        // if (currentSongId === song.id && isPlaying) {
+                                        //     dispatch(pauseSong());
+                                        // } else {
+                                        //     dispatch(playSong({ id: index, data: dataSong }));
+                                        // }
                                     }}
                                     key={index}
                                 >

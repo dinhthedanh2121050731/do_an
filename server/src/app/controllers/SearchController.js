@@ -14,13 +14,14 @@ class SearchController {
       if (!q) {
         return res.status(400).json({ error: "Missing search query" });
       }
+
       const resultsArtist = await Artist.find({
         name: new RegExp(q, "i"),
-      }).limit(2);
+      }).populate("songs");
 
-      const resultsSong = await Song.find({ artistId: resultsArtist[0]._id })
-        .populate("artistId", "name genre image_artist") // Lấy thông tin artist
-        .exec();
+      const resultsSong = await Song.find({ name: new RegExp(q, "i") }).limit(
+        4
+      );
       res
         .status(200)
         .json({ dataArtist: resultsArtist, dataSongs: resultsSong });

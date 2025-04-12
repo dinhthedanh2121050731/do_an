@@ -9,6 +9,7 @@ import style from './Footer.module.scss';
 import { Link } from 'react-router-dom';
 import images from '~/assets/images';
 import { DataMusicContext } from '~/context/DataMusicProvider';
+import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(style);
 
@@ -34,6 +35,10 @@ function Footer() {
     const prevIconRef = useRef();
     const inputVolumeControlRef = useRef();
     const inputVolumeControlBackGroundRef = useRef();
+
+    // //
+    // const dispatch = useDispatch();
+    // const { isPlaying, currentSongId, currentSongData } = useSelector((state) => state.player);
 
     // Hàm xử lý volume
     const renderIconVolumes = useCallback(() => {

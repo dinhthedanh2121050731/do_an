@@ -4,14 +4,18 @@ import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import GLStyles from './components/GlStyles';
 import { AppProvider } from './context/AppProvider';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
     <GLStyles>
-        <AppProvider>
-            <App />
-        </AppProvider>
+        <Provider store={store}>
+            <AppProvider>
+                <App />
+            </AppProvider>
+        </Provider>
         ,
     </GLStyles>,
 

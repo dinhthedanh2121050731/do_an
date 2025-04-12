@@ -4,12 +4,16 @@ const authentication = require("../middleware/auth");
 const verifyAdmin = require("../middleware/verifyAdmin");
 
 const UserController = require("../app/controllers/UserController");
+const {
+  registerValidation,
+  loginValidation,
+} = require("../validations/authValidation");
 const passport = require("passport");
 
 // [Post] /register
-router.post("/register", UserController.register);
+router.post("/register", registerValidation, UserController.register);
 // [Post] /login
-router.post("/login", UserController.login);
+router.post("/login", loginValidation, UserController.login);
 // [Post] /add-favortite-song
 router.post(
   "/add-favorite-song",

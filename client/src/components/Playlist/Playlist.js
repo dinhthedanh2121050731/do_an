@@ -14,7 +14,7 @@ import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
 const cx = classNames.bind(style);
 function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, hasMore }) {
     const { play } = useContext(DataMusicContext);
-    const { setDataFollow } = useContext(UpdateDataSidebarContext);
+    const { dataFollow, setDataFollow } = useContext(UpdateDataSidebarContext);
 
     const [dominantColor, setDominantColor] = useState(null);
     const [isDark, setIsDark] = useState(false);
@@ -39,7 +39,7 @@ function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, h
             }
         };
         fetchApi();
-    }, []);
+    }, [dataFollow.length]);
     useEffect(() => {
         if (dataArtist && hasFollow) {
             const isFollowing = hasFollow.some((fl) => fl._id === dataArtist._id);
@@ -149,8 +149,8 @@ function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, h
                 >
                     <div className={cx('container-top-control')}>
                         <div className={cx('background-icon')}>{play ? <PlayIcon /> : <PauseIcon />}</div>
-                        {!imageProfileArtist ? (
-                            !isFollow ? (
+                        {!imageProfileArtist &&
+                            (!isFollow ? (
                                 <span className={cx('following')} onClick={handleFollow}>
                                     Theo dõi
                                 </span>
@@ -158,21 +158,16 @@ function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, h
                                 <div className={cx('following')} onClick={handleUnfollow}>
                                     Bỏ theo dõi
                                 </div>
-                            )
-                        ) : (
-                            <div></div>
-                        )}
+                            ))}
                     </div>
                     {!!imageProfileArtist || <span className={cx('container-top_text')}>Phổ biển</span>}
                 </div>
 
                 <SongLists data={dataSongs} />
-                {hasMore ? (
+                {hasMore && (
                     <button className={cx('button-add')} onClick={loadMore}>
                         Xem thêm
                     </button>
-                ) : (
-                    <div></div>
                 )}
             </div>
         </div>
