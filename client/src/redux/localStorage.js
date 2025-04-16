@@ -9,7 +9,8 @@ export const loadState = () => {
 };
 export const saveState = (state) => {
     try {
-        const seralizedState = JSON.stringify(state);
+        const { currentSongId, currentSongData } = state;
+        const seralizedState = JSON.stringify({ currentSongId, currentSongData });
         localStorage.setItem('playerState', seralizedState);
     } catch (e) {
         console.log(e);

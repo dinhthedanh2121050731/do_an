@@ -1,5 +1,8 @@
 const Song = require("../models/Song");
 const User = require("../models/User");
+const cloudinary = require("../../utils/cloudinary");
+const { result } = require("lodash");
+
 class SongsController {
   async showSongsByArtist(req, res) {
     try {
@@ -15,13 +18,35 @@ class SongsController {
   async addSong(req, res) {
     try {
       const { artistId } = req.params;
-      const { name, composer, imageSong, url, duration } = req.body;
+      const { name, composer, imageSong, duration } = req.body;
+      const file = req.file;
+      console.log(req.file);
+
+      if (!file) {
+        return res.status(400).json({ err: "No audio file uploaded" });
+      }
+      const streamUpload = (fileBuffer) => {
+        return new Promise((resolve, reject) => {
+          const steam = cloudinary.uploader.upload_stream(
+            {
+              resource_type: "video",
+              folder: "songs",
+            },
+            (err, result) => {
+              if (err) reject(err);
+              else resolve(result);
+            }
+          );
+          steam.end(fileBuffer);
+        });
+      };
+      const result = await streamUpload(file.buffer);
 
       const newSong = new Song({
         name,
         composer,
         imageSong,
-        url,
+        url: result.secure_url,
         duration,
         artistId,
       });

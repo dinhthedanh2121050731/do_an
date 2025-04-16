@@ -5,16 +5,20 @@ import { FastAverageColor } from 'fast-average-color';
 
 import style from './Playlist.module.scss';
 import Image from '~/components/Image';
+import { useDispatch, useSelector } from 'react-redux';
 import { PauseIcon, PlayIcon } from '~/components/Icon';
 import SongLists from '~/components/SongLists';
 import api from '~/ultis/httpsRequest';
-import { DataMusicContext } from '~/context/DataMusicProvider';
 import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
+import { setPlaying } from '~/redux/playerSlice';
 
 const cx = classNames.bind(style);
 function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, hasMore }) {
-    const { play } = useContext(DataMusicContext);
     const { dataFollow, setDataFollow } = useContext(UpdateDataSidebarContext);
+
+    // Lấy state từ redux data music
+    const dispatch = useDispatch();
+    const { isPlaying } = useSelector((state) => state.player);
 
     const [dominantColor, setDominantColor] = useState(null);
     const [isDark, setIsDark] = useState(false);
@@ -118,7 +122,7 @@ function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, h
                 style={{ '--color-background': `${!isDark ? darkerColor : lightColor}` }}
                 className={cx('header-control')}
             >
-                <div className={cx('background-icon')}>{play ? <PlayIcon /> : <PauseIcon />}</div>
+                <div className={cx('background-icon')}>{isPlaying ? <PlayIcon /> : <PauseIcon />}</div>
                 <span className={cx('text-control')}>{dataArtist?.name}</span>
             </div>
             <header className={cx('head')}>
@@ -148,7 +152,7 @@ function Playlist({ dataArtist, dataSongs, imageProfileArtist, text, loadMore, h
                     className={cx('container-top')}
                 >
                     <div className={cx('container-top-control')}>
-                        <div className={cx('background-icon')}>{play ? <PlayIcon /> : <PauseIcon />}</div>
+                        <div className={cx('background-icon')}>{isPlaying ? <PlayIcon /> : <PauseIcon />}</div>
                         {!imageProfileArtist &&
                             (!isFollow ? (
                                 <span className={cx('following')} onClick={handleFollow}>

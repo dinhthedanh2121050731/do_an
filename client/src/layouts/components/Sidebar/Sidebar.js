@@ -26,7 +26,6 @@ function Sidebar() {
                 setDataFollow(resFollow.data.data);
                 // Cập nhật trạng thái dữ liệu
                 setIsHasData(resFavoriteSong.data.data.length > 0 || resFollow.data.data.length > 0);
-                console.log(dataFollow);
             } catch (err) {
                 console.log('Fetch API Error:', err);
             }
@@ -67,7 +66,6 @@ function Sidebar() {
 
         if (dataSong) {
             const parseData = JSON.parse(dataSong);
-            console.log(parseData);
             try {
                 const res = await api.post('auth/add-favorite-song', { id: parseData._id }, { withCredentials: true });
                 if (res.status === 200) {

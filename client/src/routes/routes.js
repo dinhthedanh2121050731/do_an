@@ -39,6 +39,13 @@ const publicRoutes = [
         layout: NoHeaderAndSidebar,
     },
     {
+        path: config.routes.profileArtist,
+        component: ProfileArtist,
+    },
+];
+//Public routes
+const privateRoutes = [
+    {
         path: config.routes.createArtist,
         component: CreateArtist,
         role: 'admin',
@@ -58,10 +65,6 @@ const publicRoutes = [
         component: UpdateArtist,
         role: 'admin',
     },
-    {
-        path: config.routes.profileArtist,
-        component: ProfileArtist,
-    },
 ];
 
-export { publicRoutes };
+export { publicRoutes, privateRoutes };

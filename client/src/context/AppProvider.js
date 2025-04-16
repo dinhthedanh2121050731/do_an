@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react';
-import { DataMusicProvider } from './DataMusicProvider';
 import { UpdateDataSidebarProvider } from './UpdateDataSidebarProvider';
 
 export const AppContext = createContext();
@@ -10,9 +9,7 @@ export const AppProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{ user, setUser }}>
-            <UpdateDataSidebarProvider>
-                <DataMusicProvider>{children}</DataMusicProvider>
-            </UpdateDataSidebarProvider>
+            <UpdateDataSidebarProvider>{children}</UpdateDataSidebarProvider>
         </AppContext.Provider>
     );
 };

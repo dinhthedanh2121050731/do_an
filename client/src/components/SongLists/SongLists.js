@@ -6,23 +6,21 @@ import HeadlessTippy from '@tippyjs/react/headless';
 import style from './SongLists.module.scss';
 import Image from '~/components/Image';
 import { AccessIcon, PauseIcon } from '~/components/Icon';
-import { DataMusicContext } from '~/context/DataMusicProvider';
 import api from '~/ultis/httpsRequest';
 import { UpdateDataSidebarContext } from '~/context/UpdateDataSidebarProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { pauseSong } from '~/redux/playerSlice';
+import { pauseSong, playSong, setPlaying, setIdSong } from '~/redux/playerSlice';
 
 const cx = classNames.bind(style);
 function SongLists({ data }) {
-    const { idMusic, play, dataMusic, setDataMusic, setIdMusic, setPlay } = useContext(DataMusicContext);
     const { setIsHasData, setDataFavoriteSong, dataFavoriteSong } = useContext(UpdateDataSidebarContext);
+    const { isPlaying, currentSongId, currentSongData } = useSelector((state) => state.player);
 
     const [hoverId, setHoverId] = useState(false);
     const [activeMenu, setActiveMenu] = useState(null);
     const [isMatch, setIsMatch] = useState(false);
 
     const dispatch = useDispatch();
-    const { isPlaying, currentSongId, currentSongData } = useSelector((state) => state.player);
 
     useEffect(() => {
         const fetchApi = async (pageNum) => {
@@ -54,7 +52,7 @@ function SongLists({ data }) {
         (song, index) => {
             return hoverId !== index ? (
                 <div>
-                    {index == idMusic && dataMusic[idMusic]?.name == song?.name && play ? (
+                    {index == currentSongId && currentSongData[currentSongId]?.name == song?.name && isPlaying ? (
                         <div className={cx('music-icon')}>
                             <div className={cx('bar')}></div>
                             <div className={cx('bar')}></div>
@@ -64,7 +62,7 @@ function SongLists({ data }) {
                     ) : (
                         <span
                             className={cx('text-center', {
-                                active: index == idMusic && dataMusic[idMusic]?.name == song?.name,
+                                active: index == currentSongId && currentSongData[currentSongId]?.name == song?.name,
                             })}
                         >
                             {index + 1}
@@ -75,7 +73,7 @@ function SongLists({ data }) {
                 <PauseIcon />
             );
         },
-        [hoverId, play],
+        [hoverId, isPlaying],
     );
 
     // Khi mà hover vào element
@@ -214,17 +212,20 @@ function SongLists({ data }) {
                                 <Image src={song?.imageSong} className={cx('image-song')} />
                                 <div
                                     className={cx('text-center', {
-                                        active: index == idMusic && dataMusic[idMusic]?.name == song?.name,
+                                        active:
+                                            index == currentSongId &&
+                                            currentSongData[currentSongId]?.name == song?.name,
                                     })}
                                     onClick={() => {
-                                        setIdMusic(index);
-                                        setDataMusic(dataSong);
-                                        setPlay(true);
-                                        // if (currentSongId === song.id && isPlaying) {
-                                        //     dispatch(pauseSong());
-                                        // } else {
-                                        //     dispatch(playSong({ id: index, data: dataSong }));
-                                        // }
+                                        if (currentSongId === song._id && isPlaying) {
+                                            dispatch(pauseSong());
+                                        } else {
+                                            dispatch(playSong({ id: index, data: dataSong }));
+                                            dispatch(pauseSong());
+                                            setTimeout(() => {
+                                                dispatch(setPlaying());
+                                            }, 1000);
+                                        }
                                     }}
                                     key={index}
                                 >

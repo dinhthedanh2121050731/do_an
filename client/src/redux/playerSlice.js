@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     isPlaying: null,
-    currentSongId: 1,
+    currentSongId: null,
     currentSongData: null,
 };
 
@@ -11,7 +11,7 @@ const playerSlice = createSlice({
     initialState,
     reducers: {
         playSong: (state, action) => {
-            (state.isPlaying = true), (state.currentSongId = action.payload.id);
+            state.currentSongId = action.payload.id;
             state.currentSongData = action.payload.data;
         },
         pauseSong: (state) => {

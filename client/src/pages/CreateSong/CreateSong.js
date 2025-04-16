@@ -8,46 +8,48 @@ function CreateSong() {
     const [name, setName] = useState('');
     const [composer, setComposer] = useState('');
     const [imageSong, setImageSong] = useState('');
-    const [url, setUrl] = useState('');
+    const [url, setUrl] = useState(null);
     const [duration, setDuration] = useState('');
     const [message, setMessage] = useState('');
     const params = useParams();
     const id = params.id;
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Gửi dữ liệu đến backend
         try {
-            const fetchApi = async () => {
-                const response = await api.post(
-                    `artists/add-song/${id}`,
-                    {
-                        name,
-                        composer,
-                        imageSong,
-                        url,
-                        duration,
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('composer', composer);
+            formData.append('imageSong', imageSong);
+            formData.append('duration', duration);
+            formData.append('url', url); // file
+
+            const response = await api.post(
+                `songs/artist/add-song/${id}`,
+                { name, composer, imageSong, duration, url },
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
                     },
-                    {
-                        withCredentials: 'include',
-                    },
-                );
-                setMessage('User created successfully!');
-                setComposer('');
-                setName('');
-                setImageSong('');
-                setImageProfileArtist('');
-                setUrl('');
-                navigate('/admin/artist/artist-admin-show');
-            };
-            fetchApi();
+                },
+            );
+
+            setMessage('Song created successfully!');
+            setComposer('');
+            setName('');
+            setImageSong('');
+            setUrl(null);
+            setDuration('');
+            navigate('/admin/artist/artist-admin-show');
         } catch (error) {
-            console.error('Error creating user:', error);
-            setMessage('Error creating user');
+            console.error('Error creating song:', error);
+            setMessage('Error creating song');
         }
     };
+
     return (
         <div className={cx('wrapper')}>
             <h1>Create Song</h1>
@@ -66,7 +68,7 @@ function CreateSong() {
                 </div>
                 <div>
                     <label>Url sound:</label>
-                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
+                    <input type="file" accept="audio/*" onChange={(e) => setUrl(e.target.files[0])} required />
                 </div>
                 <div>
                     <label>Duration sound:</label>

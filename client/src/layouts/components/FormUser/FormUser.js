@@ -48,6 +48,7 @@ function FormUser({ user }) {
                     withCredentials: 'include',
                 });
                 window.location.href = '/';
+                localStorage.clear();
             } catch (err) {
                 console.log(err);
             }
